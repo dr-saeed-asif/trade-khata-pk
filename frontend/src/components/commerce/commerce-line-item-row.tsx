@@ -12,7 +12,6 @@ interface CommerceLineItemRowProps {
 export const CommerceLineItemRow = ({
   lineNumber,
   itemName,
-  itemSku,
   quantity,
   unitPrice,
   lineTotal,

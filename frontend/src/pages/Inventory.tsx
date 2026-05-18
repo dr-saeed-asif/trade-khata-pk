@@ -17,8 +17,10 @@ import { useAuthStore } from '@/store/auth-store'
 import { hasPermission } from '@/lib/permissions'
 import { inventoryItemToLabel } from '@/lib/item-label'
 import { ItemCodeSticker } from '@/components/Item/item-code-sticker'
+import { navigateToEdit } from '@/lib/edit-route'
 
 const INVENTORY_PAGE_SIZE = 10
+const INVENTORY_PATH = '/admin/inventory'
 
 export const InventoryListPage = () => {
   const [codePreview, setCodePreview] = useState<{
@@ -43,10 +45,8 @@ export const InventoryListPage = () => {
   const [importing, setImporting] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [viewItem, setViewItem] = useState<InventoryItem | null>(null)
-  const [editItem, setEditItem] = useState<InventoryItem | null>(null)
   const [itemToDelete, setItemToDelete] = useState<InventoryItem | null>(null)
   const [deleting, setDeleting] = useState(false)
-  const [savingEdit, setSavingEdit] = useState(false)
   const { toast } = useToast()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -253,33 +253,6 @@ export const InventoryListPage = () => {
     }
   }
 
-  const handleSaveEdit = async () => {
-    if (!editItem) return
-    setSavingEdit(true)
-    try {
-      await inventoryService.update(editItem.id, {
-        name: editItem.name,
-        sku: editItem.sku,
-        quantity: editItem.quantity,
-        price: editItem.price,
-        supplier: editItem.supplier,
-        location: editItem.location,
-        description: editItem.description,
-      })
-      toast({ title: 'Item updated successfully' })
-      setEditItem(null)
-      await loadItems()
-    } catch (error) {
-      toast({
-        title: 'Update failed',
-        description: error instanceof Error ? error.message : 'Please try again.',
-        variant: 'error',
-      })
-    } finally {
-      setSavingEdit(false)
-    }
-  }
-
   if (items.length === 0) {
     return (
       <Card className="space-y-4">
@@ -349,7 +322,7 @@ export const InventoryListPage = () => {
         onDownloadQr={(item) => void downloadQr(item.qrValue, item.sku)}
         onDownloadBarcode={(item) => void downloadBarcode(item.barcodeValue, item.sku)}
         onView={(item) => setViewItem(item)}
-        onEdit={(item) => setEditItem({ ...item })}
+        onEdit={(item) => navigateToEdit(navigate, INVENTORY_PATH, item.id)}
         onDelete={setItemToDelete}
       />
       <Modal
@@ -400,38 +373,6 @@ export const InventoryListPage = () => {
               <p><span className="font-medium">Created At:</span> {formatDateTime(viewItem.createdAt)}</p>
               <p><span className="font-medium">Updated At:</span> {formatDateTime(viewItem.updatedAt)}</p>
               <p className="md:col-span-2"><span className="font-medium">Description:</span> {viewItem.description || '-'}</p>
-            </div>
-          </div>
-        </div>
-      ) : null}
-      {editItem ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-          <div className="w-full max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <p className="text-lg font-semibold text-slate-900">Edit Item</p>
-                <p className="text-sm text-slate-600">ID: {editItem.id}</p>
-              </div>
-              <Button type="button" variant="outline" onClick={() => setEditItem(null)}>
-                Close
-              </Button>
-            </div>
-            <div className="grid gap-3 md:grid-cols-2">
-              <input className="h-10 rounded-md border border-slate-300 px-3 text-sm" value={editItem.name} onChange={(e) => setEditItem((prev) => (prev ? { ...prev, name: e.target.value } : prev))} placeholder="Name" />
-              <input className="h-10 rounded-md border border-slate-300 px-3 text-sm" value={editItem.sku} onChange={(e) => setEditItem((prev) => (prev ? { ...prev, sku: e.target.value } : prev))} placeholder="SKU" />
-              <input className="h-10 rounded-md border border-slate-300 px-3 text-sm" type="number" value={editItem.quantity} onChange={(e) => setEditItem((prev) => (prev ? { ...prev, quantity: Number(e.target.value || 0) } : prev))} placeholder="Quantity" />
-              <input className="h-10 rounded-md border border-slate-300 px-3 text-sm" type="number" step="0.01" value={editItem.price} onChange={(e) => setEditItem((prev) => (prev ? { ...prev, price: Number(e.target.value || 0) } : prev))} placeholder="Price" />
-              <input className="h-10 rounded-md border border-slate-300 px-3 text-sm" value={editItem.supplier} onChange={(e) => setEditItem((prev) => (prev ? { ...prev, supplier: e.target.value } : prev))} placeholder="Supplier" />
-              <input className="h-10 rounded-md border border-slate-300 px-3 text-sm" value={editItem.location} onChange={(e) => setEditItem((prev) => (prev ? { ...prev, location: e.target.value } : prev))} placeholder="Location" />
-              <textarea className="min-h-24 rounded-md border border-slate-300 p-3 text-sm md:col-span-2" value={editItem.description ?? ''} onChange={(e) => setEditItem((prev) => (prev ? { ...prev, description: e.target.value } : prev))} placeholder="Description" />
-            </div>
-            <div className="mt-4 flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => setEditItem(null)}>
-                Cancel
-              </Button>
-              <Button type="button" disabled={savingEdit} onClick={() => void handleSaveEdit()}>
-                {savingEdit ? 'Saving...' : 'Save changes'}
-              </Button>
             </div>
           </div>
         </div>

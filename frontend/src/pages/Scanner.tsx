@@ -7,6 +7,7 @@ import type { ScannedLocation } from '@/services/inventory.service'
 import type { InventoryItem } from '@/types'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { InventoryItemDetails } from '@/components/inventory/inventory-item-details'
 import { hasPermission } from '@/lib/permissions'
 import { useAuthStore } from '@/store/auth-store'
 
@@ -91,7 +92,11 @@ export const ScannerPage = () => {
         </div>
       ) : null}
       {error ? <p className="text-red-600">{error}</p> : null}
-      {item ? <div className="rounded-md border border-slate-200 p-4"><p className="font-semibold">{item.name}</p><p>SKU: {item.sku}</p><p>Category: {item.category}</p></div> : null}
+      {item ? (
+        <div className="rounded-md border border-slate-200 p-4">
+          <InventoryItemDetails item={item} />
+        </div>
+      ) : null}
       {locationResult ? <div className="rounded-md border border-slate-200 p-4"><p className="font-semibold">{locationResult.name}</p><p>Warehouse: {locationResult.warehouse.name}</p><p>Items: {locationResult.items.length}</p></div> : null}
     </Card>
   )

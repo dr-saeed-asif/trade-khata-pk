@@ -29,7 +29,7 @@ import {
   isModuleEditRoute,
   navigateToEdit,
 } from '@/lib/edit-route'
-import { printPurchaseBill } from '@/lib/print-bill'
+import { downloadPurchaseBillPdf } from '@/lib/print-bill'
 
 const PAGE_SIZE = 10
 const MODULE_PATH = '/admin/purchases'
@@ -205,14 +205,15 @@ export const PurchasesPage = () => {
   const openDownload = async (record: PurchaseRecord) => {
     try {
       const full = await purchasesService.getById(record.id)
-      printPurchaseBill(full)
+      await downloadPurchaseBillPdf(full)
+      toast({ title: 'Bill downloaded' })
     } catch (error) {
-      if (error instanceof Error && error.message.includes('Pop-up blocked')) {
-        toast({ title: 'Pop-up blocked', description: error.message, variant: 'error' })
-        return
-      }
       const message = axios.isAxiosError(error) ? error.response?.data?.message : undefined
-      toast({ title: 'Could not download bill', description: message, variant: 'error' })
+      toast({
+        title: 'Could not download bill',
+        description: message ?? (error instanceof Error ? error.message : 'Please try again.'),
+        variant: 'error',
+      })
     }
   }
 

@@ -15,6 +15,7 @@ interface ApiInventoryItem {
   id: string
   name: string
   sku: string
+  categoryId?: string
   quantity: number
   reservedQty?: number
   availableQty?: number
@@ -113,6 +114,7 @@ const mapItem = (item: ApiInventoryItem): InventoryItem => ({
   name: item.name,
   sku: item.sku,
   category: item.category?.name ?? 'Unknown',
+  categoryId: item.categoryId ?? item.category?.id,
   categories: item.categories,
   tags: item.tags?.map((tag) => (typeof tag === 'string' ? tag : tag.name)),
   quantity: item.quantity,
@@ -216,6 +218,10 @@ export const inventoryService = {
   },
   create: async (payload: ItemInput) => {
     const { data } = await http.post<ApiInventoryItem>('/items', payload)
+    return mapItem(data)
+  },
+  getById: async (id: string) => {
+    const { data } = await http.get<ApiInventoryItem>(`/items/${id}`)
     return mapItem(data)
   },
   detailsFromCode: async (value: string) => {

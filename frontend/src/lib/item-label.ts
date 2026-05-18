@@ -25,7 +25,16 @@ const formatExpiryDate = (value: string) => {
   return `${day}-${month}-${year}`
 }
 
-/** Text shown on barcode/QR labels under the product name. */
+/** Product title on sticker e.g. "Almond (500gm)". */
+export const formatItemLabelTitle = (info: Pick<ItemLabelInfo, 'name' | 'weight'>) => {
+  const name = info.name.trim()
+  const weight = info.weight?.trim()
+  if (!name) return '—'
+  if (!weight) return name
+  return `${name} (${weight})`
+}
+
+/** Text shown on barcode/QR labels beside the code. */
 export const formatItemExpiryLabel = (info: Pick<ItemLabelInfo, 'expiryMessage' | 'expiryDate'>) => {
   const parts: string[] = []
   if (info.expiryMessage?.trim()) parts.push(info.expiryMessage.trim())

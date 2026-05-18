@@ -1,4 +1,4 @@
-import { formatItemExpiryLabel, type ItemLabelInfo } from '@/lib/item-label'
+import { formatItemExpiryLabel, formatItemLabelTitle, type ItemLabelInfo } from '@/lib/item-label'
 import { cn, currency } from '@/lib/utils'
 
 interface ItemCodeStickerProps {
@@ -8,9 +8,16 @@ interface ItemCodeStickerProps {
   className?: string
 }
 
+const BARCODE_MAX_WIDTH = 'max-w-[280px]'
+
 export const ItemCodeSticker = ({ label, imageUrl, codeType, className }: ItemCodeStickerProps) => {
   const expiryText = formatItemExpiryLabel(label)
-  const weightText = label.weight?.trim() ? `Wt: ${label.weight.trim()}` : null
+  const labelTitle = formatItemLabelTitle(label)
+  const codeColumnClass =
+    codeType === 'qr' ? 'mx-auto w-44' : cn('mx-auto w-full', BARCODE_MAX_WIDTH)
+  const codeImageClass =
+    codeType === 'qr' ? 'h-44 w-44 object-contain' : cn('h-24 w-full object-contain', BARCODE_MAX_WIDTH)
+  const expiryMaxHeight = codeType === 'qr' ? 'max-h-44' : 'max-h-24'
 
   return (
     <div
@@ -19,39 +26,29 @@ export const ItemCodeSticker = ({ label, imageUrl, codeType, className }: ItemCo
         className,
       )}
     >
-      {expiryText ? (
-        <p
-          className="absolute bottom-6 right-2 top-10 z-10 max-h-[calc(100%-3rem)] text-[10px] font-semibold leading-tight text-amber-800"
-          style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-          aria-label={`Expiry: ${expiryText}`}
-        >
-          {expiryText}
+      <div className={cn(codeColumnClass, 'flex flex-col gap-2')}>
+        <p className="min-w-0 truncate text-sm font-bold text-slate-900">
+          {typeof label.price === 'number' ? currency(label.price) : '—'}
         </p>
-      ) : null}
 
-      <div className={cn('flex flex-col', expiryText ? 'pr-6' : undefined)}>
-        <div className="mb-3 flex items-start justify-between gap-3">
-          <p className="text-sm font-bold text-slate-900">
-            {typeof label.price === 'number' ? currency(label.price) : '—'}
-          </p>
-          {weightText ? (
-            <p className="text-right text-sm font-medium text-slate-600">{weightText}</p>
-          ) : (
-            <span />
-          )}
-        </div>
+        <div className="flex items-start gap-1">
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <img src={imageUrl} alt={codeType === 'qr' ? 'QR code' : 'Barcode'} className={codeImageClass} />
+            <p className="text-center text-sm font-semibold leading-snug text-slate-900">{labelTitle}</p>
+          </div>
 
-        <div className="flex flex-col items-center gap-2 pt-1">
-          <img
-            src={imageUrl}
-            alt={codeType === 'qr' ? 'QR code' : 'Barcode'}
-            className={
-              codeType === 'qr'
-                ? 'h-44 w-44 object-contain'
-                : 'h-24 w-full max-w-[280px] object-contain'
-            }
-          />
-          <p className="w-full text-center text-sm font-semibold text-slate-900">{label.name}</p>
+          {expiryText ? (
+            <p
+              className={cn(
+                'shrink-0 self-stretch overflow-hidden text-[8px] font-semibold leading-[1.15] text-amber-800',
+                expiryMaxHeight,
+              )}
+              style={{ writingMode: 'vertical-rl', textOrientation: 'sideways' }}
+              aria-label={`Expiry: ${expiryText}`}
+            >
+              {expiryText}
+            </p>
+          ) : null}
         </div>
       </div>
     </div>

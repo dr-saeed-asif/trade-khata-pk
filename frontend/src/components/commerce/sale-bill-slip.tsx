@@ -4,10 +4,11 @@ import {
   BUSINESS_NAME,
   BUSINESS_NAME_URDU,
   BUSINESS_PHONE,
-  BILL_TERMS_URDU,
 } from '@/lib/business'
+import { BillTermsSection } from '@/components/commerce/bill-terms-section'
 import { InvoiceBanner } from '@/components/commerce/invoice-banner'
 import { amountToWords } from '@/lib/number-to-words'
+import { cn } from '@/lib/utils'
 import type { SaleRecord } from '@/types'
 
 const slipPurple = '#6b21a8'
@@ -25,16 +26,20 @@ interface SaleBillSlipProps {
   sale: SaleRecord
   /** DOM id used when printing / downloading */
   slipId?: string
+  className?: string
 }
 
-export const SaleBillSlip = ({ sale, slipId = 'sale-bill-slip' }: SaleBillSlipProps) => (
+export const SaleBillSlip = ({ sale, slipId = 'sale-bill-slip', className }: SaleBillSlipProps) => (
   <div
     id={slipId}
-    className="mx-auto w-full max-w-[210mm] bg-white text-[11px] leading-snug text-slate-900"
+    className={cn(
+      'mx-auto w-full max-w-[210mm] bg-white text-[11px] leading-snug text-slate-900',
+      className,
+    )}
     style={{ fontFamily: 'Arial, Helvetica, sans-serif' }}
   >
     <div className="flex items-start justify-between gap-4 border-b-2 pb-3" style={{ borderColor: slipPurple }}>
-      <img src={appLogo} alt="" className="h-20 w-20 shrink-0 rounded-full object-contain" />
+      <img src={appLogo} alt="Banu Adam logo" className="h-20 w-20 shrink-0 rounded-full object-contain" />
       <div className="min-w-0 flex-1 text-right">
         <p className="text-base font-bold" style={{ color: slipPurple }}>
           {BUSINESS_NAME}
@@ -106,14 +111,7 @@ export const SaleBillSlip = ({ sale, slipId = 'sale-bill-slip' }: SaleBillSlipPr
           </div>
           <p className="px-2 py-2 text-xs capitalize">{amountToWords(sale.total)}</p>
         </div>
-        <div className="overflow-hidden rounded border" style={{ borderColor: slipPurple }}>
-          <div className="px-2 py-1 text-xs font-bold text-white" style={{ backgroundColor: slipPurple }}>
-            Terms and Conditions
-          </div>
-          <p className="px-2 py-2 text-xs leading-relaxed" dir="rtl">
-            {BILL_TERMS_URDU}
-          </p>
-        </div>
+        <BillTermsSection borderColor={slipPurple} />
         {sale.notes ? (
           <p className="text-xs text-slate-600">
             <span className="font-semibold">Notes: </span>

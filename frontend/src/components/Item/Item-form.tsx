@@ -11,6 +11,9 @@ interface ItemFormProps {
   itemOptions: string[]
   errors: Partial<Record<keyof ItemInput, string>>
   isSubmitting: boolean
+  mode?: 'create' | 'edit'
+  submitLabel?: string
+  onCancel?: () => void
   onFormChange: (field: keyof ItemInput, value: unknown) => void
   onSubmit: () => void
 }
@@ -27,8 +30,20 @@ const FieldError = ({ message }: { message?: string }) => (
   <p className="min-h-[1rem] text-xs text-red-600">{message}</p>
 )
 
-export const ItemForm = ({ form, categories, itemOptions, errors, isSubmitting, onFormChange, onSubmit }: ItemFormProps) => {
+export const ItemForm = ({
+  form,
+  categories,
+  itemOptions,
+  errors,
+  isSubmitting,
+  mode = 'create',
+  submitLabel,
+  onCancel,
+  onFormChange,
+  onSubmit,
+}: ItemFormProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const isEditMode = mode === 'edit'
   const setAutoSku = () => onFormChange('sku', generateNumericSku())
   const urduNameLookup = useMemo(
     () =>
@@ -71,7 +86,7 @@ export const ItemForm = ({ form, categories, itemOptions, errors, isSubmitting, 
             onChange={(event) => {
               const selectedName = event.target.value
               onFormChange('name', selectedName)
-              if (!form.sku && selectedName.trim()) setAutoSku()
+              if (!isEditMode && !form.sku && selectedName.trim()) setAutoSku()
               setIsDropdownOpen(true)
             }}
             onFocus={() => setIsDropdownOpen(true)}
@@ -92,7 +107,7 @@ export const ItemForm = ({ form, categories, itemOptions, errors, isSubmitting, 
                       onMouseDown={(event) => {
                         event.preventDefault()
                         onFormChange('name', name)
-                        if (!form.sku) setAutoSku()
+                        if (!isEditMode && !form.sku) setAutoSku()
                         setIsDropdownOpen(false)
                       }}
                     >
@@ -206,9 +221,16 @@ export const ItemForm = ({ form, categories, itemOptions, errors, isSubmitting, 
         />
       </div>
 
-      <Button disabled={isSubmitting} className="md:col-span-2">
-        {isSubmitting ? 'Saving...' : 'Create Item'}
-      </Button>
+      <div className="flex flex-wrap justify-end gap-2 md:col-span-2">
+        {onCancel ? (
+          <Button type="button" variant="outline" disabled={isSubmitting} onClick={onCancel}>
+            Cancel
+          </Button>
+        ) : null}
+        <Button disabled={isSubmitting}>
+          {isSubmitting ? 'Saving...' : submitLabel ?? (isEditMode ? 'Save changes' : 'Create Item')}
+        </Button>
+      </div>
     </form>
   )
 }

@@ -6,6 +6,7 @@ import { ForgotPasswordPage } from '@/pages/ForgotPassword'
 import { AppShell } from '@/components/layout/app-shell'
 import { DashboardPage } from '@/pages/Dashboard'
 import { AddItemPage } from '@/pages/Item'
+import { EditItemPage } from '@/pages/EditItem'
 import { InventoryListPage } from '@/pages/Inventory'
 import { ScannerPage } from '@/pages/Scanner'
 import { CategoriesPage } from '@/pages/Category'
@@ -59,6 +60,7 @@ const ProtectedRoutes = () => {
         <Route path="/admin/dashboard" element={<RequirePermission permission="dashboard.read"><DashboardPage /></RequirePermission>} />
         <Route path="/admin/add-item" element={<RequirePermission permission="items.create"><AddItemPage /></RequirePermission>} />
         <Route path="/admin/inventory" element={<RequirePermission permission="items.read"><InventoryListPage /></RequirePermission>} />
+        <Route path="/admin/inventory/edit" element={<RequirePermission permission="items.update"><EditItemPage /></RequirePermission>} />
         <Route path="/admin/scanner" element={<RequirePermission permission="scan.create"><ScannerPage /></RequirePermission>} />
         <Route path="/admin/stock-operations" element={<RequirePermission permission="stock.read"><StockOperationsPage /></RequirePermission>} />
         <Route path="/admin/categories" element={<RequirePermission permission="categories.read"><CategoriesPage /></RequirePermission>} />

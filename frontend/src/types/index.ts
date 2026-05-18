@@ -79,6 +79,7 @@ export interface InventoryItem {
   name: string
   sku: string
   category: string
+  categoryId?: string
   categories?: Category[]
   tags?: string[]
   quantity: number

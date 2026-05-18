@@ -1,11 +1,11 @@
-import appLogo from '@/assets/banu-adam-logo.png'
+import { appLogo } from '@/lib/branding'
 import {
   BUSINESS_ADDRESS_URDU,
   BUSINESS_NAME,
   BUSINESS_NAME_URDU,
   BUSINESS_PHONE,
-  BILL_TERMS_URDU,
 } from '@/lib/business'
+import { billTermsHtml } from '@/lib/bill-terms'
 import { invoiceBannerHtml } from '@/components/commerce/invoice-banner'
 import { amountToWords } from '@/lib/number-to-words'
 import type { SaleRecord } from '@/types'
@@ -28,16 +28,7 @@ const formatBillDate = (value: string) => {
   return `${day}-${month}-${year}`
 }
 
-const resolveLogoUrl = () => {
-  if (appLogo.startsWith('http') || appLogo.startsWith('data:') || appLogo.startsWith('file:')) {
-    return appLogo
-  }
-  try {
-    return new URL(appLogo, window.location.href).href
-  } catch {
-    return appLogo
-  }
-}
+const resolveLogoUrl = () => appLogo
 
 const lineRows = (sale: SaleRecord) =>
   sale.lines
@@ -47,6 +38,7 @@ const lineRows = (sale: SaleRecord) =>
       return `<tr style="border-bottom:1px solid #e2e8f0;${zebra}">
         <td style="padding:4px 6px;">${index + 1}</td>
         <td style="padding:4px 8px;">${escapeHtml(line.itemName ?? '—')}</td>
+        <td style="padding:4px 8px;">${escapeHtml(line.itemSku ?? '—')}</td>
         <td style="padding:4px 8px;text-align:right;">${line.quantity}</td>
         <td style="padding:4px 8px;text-align:right;">Rs ${line.unitPrice.toFixed(2)}</td>
         <td style="padding:4px 8px;text-align:right;font-weight:600;">Rs ${amount.toFixed(2)}</td>
@@ -80,15 +72,15 @@ export const buildSaleBillDocument = (sale: SaleRecord, title?: string) => {
   <title>${docTitle}</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 16px; font-family: Arial, Helvetica, sans-serif; color: #0f172a; font-size: 11px; line-height: 1.4; }
+    html, body { margin: 0; padding: 0; height: auto; min-height: 0; font-family: Arial, Helvetica, sans-serif; color: #0f172a; font-size: 11px; line-height: 1.4; background: #fff; }
     @media print {
-      body { padding: 0; }
+      html, body { height: auto !important; min-height: 0 !important; }
       @page { size: A4; margin: 12mm; }
     }
   </style>
 </head>
 <body>
-  <div style="max-width:210mm;margin:0 auto;background:#fff;">
+  <div id="bill-document-root" data-bill-root style="max-width:210mm;margin:0 auto;background:#fff;">
     <table style="width:100%;border-collapse:collapse;border-bottom:2px solid ${PURPLE};margin-bottom:12px;">
       <tr>
         <td style="width:88px;vertical-align:top;padding-bottom:12px;">
@@ -142,10 +134,7 @@ export const buildSaleBillDocument = (sale: SaleRecord, title?: string) => {
             <div style="background:${PURPLE};color:#fff;padding:6px 8px;font-size:11px;font-weight:bold;">Invoice Amount In Words</div>
             <p style="margin:0;padding:8px;font-size:11px;text-transform:capitalize;">${escapeHtml(amountToWords(sale.total))}</p>
           </div>
-          <div style="border:1px solid ${PURPLE};border-radius:4px;overflow:hidden;">
-            <div style="background:${PURPLE};color:#fff;padding:6px 8px;font-size:11px;font-weight:bold;">Terms and Conditions</div>
-            <p style="margin:0;padding:8px;font-size:11px;line-height:1.5;" dir="rtl">${escapeHtml(BILL_TERMS_URDU)}</p>
-          </div>
+          ${billTermsHtml(PURPLE, escapeHtml)}
           ${notesBlock}
         </td>
         <td style="width:50%;vertical-align:top;">
