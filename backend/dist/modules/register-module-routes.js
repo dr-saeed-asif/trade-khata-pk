@@ -1,0 +1,35 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerModuleRoutes = void 0;
+const auth_routes_1 = __importDefault(require("../routes/auth.routes"));
+const item_routes_1 = __importDefault(require("../routes/item.routes"));
+const category_routes_1 = __importDefault(require("../routes/category.routes"));
+const qr_routes_1 = __importDefault(require("../routes/qr.routes"));
+const scan_routes_1 = __importDefault(require("../routes/scan.routes"));
+const warehouse_routes_1 = __importDefault(require("../routes/warehouse.routes"));
+const location_routes_1 = __importDefault(require("../routes/location.routes"));
+const report_routes_1 = __importDefault(require("../routes/report.routes"));
+const alert_routes_1 = __importDefault(require("../routes/alert.routes"));
+const stock_routes_1 = __importDefault(require("../routes/stock.routes"));
+const admin_routes_1 = __importDefault(require("../routes/admin.routes"));
+const graphql_routes_1 = __importDefault(require("../routes/graphql.routes"));
+const architecture_routes_1 = __importDefault(require("../routes/architecture.routes"));
+const registerModuleRoutes = (router) => {
+    router.use('/auth', auth_routes_1.default);
+    router.use('/items', item_routes_1.default);
+    router.use('/categories', category_routes_1.default);
+    router.use('/qr', qr_routes_1.default);
+    router.use('/scan', scan_routes_1.default);
+    router.use('/warehouses', warehouse_routes_1.default);
+    router.use('/locations', location_routes_1.default);
+    router.use('/reports', report_routes_1.default);
+    router.use('/alerts', alert_routes_1.default);
+    router.use('/stock', stock_routes_1.default);
+    router.use('/admin', admin_routes_1.default);
+    router.use('/graphql', graphql_routes_1.default);
+    router.use('/architecture', architecture_routes_1.default);
+};
+exports.registerModuleRoutes = registerModuleRoutes;

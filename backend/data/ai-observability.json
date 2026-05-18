@@ -1,0 +1,815 @@
+{
+  "logs": [
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "total category count",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 5,
+      "success": true,
+      "id": "329fa84f-4657-4279-8898-a03323015865",
+      "createdAt": "2026-05-01T10:55:04.338Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "total category count",
+      "intent": "custom-query",
+      "toolCalls": [
+        "category-count"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 9,
+      "success": true,
+      "id": "732b38f1-7a3e-4631-99d6-bb19ea9d4c42",
+      "createdAt": "2026-05-01T10:57:37.232Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "total inventories",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 2,
+      "success": true,
+      "id": "ab1f5555-850b-40a6-ac7a-a9dd1f949240",
+      "createdAt": "2026-05-01T10:58:04.579Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "total inventories count",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 2,
+      "success": true,
+      "id": "2e8689e4-e6b8-448c-bf7e-b413243b5d4f",
+      "createdAt": "2026-05-01T10:58:23.327Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "total inventories count",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 18,
+      "success": true,
+      "id": "2699244a-ad1a-491c-80fb-f15c3f7bdf09",
+      "createdAt": "2026-05-01T11:03:03.279Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "i want Expiry Inventory",
+      "intent": "custom-query",
+      "toolCalls": [
+        "expired-count"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 68,
+      "success": true,
+      "id": "c6a61ac9-8865-4092-8628-fe7f2be9d165",
+      "createdAt": "2026-05-01T11:03:38.713Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "i want all Inventory name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 11,
+      "success": true,
+      "id": "e5e3db15-6518-4e3f-b585-fa0158632628",
+      "createdAt": "2026-05-01T11:04:23.757Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "i want inventroy of Multan",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 8,
+      "success": true,
+      "id": "1ad02566-c7f1-48eb-a695-cf474c397146",
+      "createdAt": "2026-05-01T11:04:59.266Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "alerts details",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 11,
+      "success": true,
+      "id": "d38fada2-7613-47fd-8be3-80645e137576",
+      "createdAt": "2026-05-01T11:05:33.560Z"
+    },
+    {
+      "userId": "485c6c8e-b108-466f-a5c8-96310cf3d191",
+      "role": "USER",
+      "message": "Generate report of inventory",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 16,
+      "success": true,
+      "id": "739b7107-4816-42d2-a1ec-680e852e73a9",
+      "createdAt": "2026-05-01T11:11:40.496Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "please tell me total Users",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 13,
+      "success": true,
+      "id": "abc38ba4-333a-4029-b2e0-21dec65a88f5",
+      "createdAt": "2026-05-01T11:12:55.966Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "please tell me total Users",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 60313,
+      "success": true,
+      "id": "2f62bcfb-a3e9-492e-9709-5cde3b63d194",
+      "createdAt": "2026-05-01T11:27:04.705Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "please tell me total Users",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 5227,
+      "success": true,
+      "id": "17e3eb2d-3960-4dd9-a011-f3cf297a966e",
+      "createdAt": "2026-05-01T11:27:10.065Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "also tell me total Roles",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 21898,
+      "success": true,
+      "id": "dd56c52f-0b28-4375-ba6c-977e4c5f2b37",
+      "createdAt": "2026-05-01T11:28:16.241Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get All Users Name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 29564,
+      "success": true,
+      "id": "f0f33de8-48d4-4aa4-a1d7-d56fa86d176e",
+      "createdAt": "2026-05-01T11:29:51.842Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all users name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "users-list"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 34344,
+      "success": true,
+      "id": "dcba5c37-277d-48bf-bc7b-87ed3103c25e",
+      "createdAt": "2026-05-01T11:32:47.648Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get all Roles name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 17133,
+      "success": true,
+      "id": "9f9ef533-a0b9-4e64-9536-cd508161c868",
+      "createdAt": "2026-05-01T11:33:22.915Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get all users email",
+      "intent": "custom-query",
+      "toolCalls": [
+        "users-list"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 37106,
+      "success": true,
+      "id": "63897e1e-40fb-47d9-bb9a-b340996d9154",
+      "createdAt": "2026-05-01T11:34:36.271Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get all Inventory Name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "ollama",
+      "citationsCount": 0,
+      "latencyMs": 89377,
+      "success": true,
+      "id": "490e825b-205b-4101-9853-5a41fa2fbaee",
+      "createdAt": "2026-05-01T12:23:57.069Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "gell all inventory name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "inventory-details"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 307378,
+      "success": false,
+      "errorMessage": "fetch failed",
+      "id": "96b70228-0cd1-4c8e-b4c1-d86b7fc36496",
+      "createdAt": "2026-05-01T12:44:32.025Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "gell all inventory name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "inventory-details"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 310119,
+      "success": false,
+      "errorMessage": "fetch failed",
+      "id": "a7be4a18-acbe-4ed0-99e0-537e88bbf8d2",
+      "createdAt": "2026-05-01T12:50:40.428Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "gell all inventory name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "inventory-details"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 308239,
+      "success": true,
+      "id": "c1f51640-913a-4158-913e-d4c3749eceff",
+      "createdAt": "2026-05-01T13:00:02.193Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "i want only inventort names",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 313593,
+      "success": true,
+      "id": "b03a4eff-80a1-47ec-92c2-d21155562be5",
+      "createdAt": "2026-05-01T13:05:55.343Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all inventory names",
+      "intent": "custom-query",
+      "toolCalls": [
+        "inventory-details"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 297,
+      "success": true,
+      "id": "89114b07-08d3-495f-b9c0-ae08e268e07f",
+      "createdAt": "2026-05-01T13:10:54.101Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "only display SKU of inventory",
+      "intent": "search-items",
+      "toolCalls": [
+        "search-items"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 62,
+      "success": true,
+      "id": "54e08297-7f44-4780-93f8-c0ccdb8b1cba",
+      "createdAt": "2026-05-01T13:11:21.077Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all sku",
+      "intent": "search-items",
+      "toolCalls": [
+        "search-items"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 8,
+      "success": true,
+      "id": "6897b095-48b8-453d-826c-4b126bea1c2a",
+      "createdAt": "2026-05-01T13:12:09.887Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all category",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 82,
+      "success": true,
+      "id": "146eea06-6193-42cb-a449-a4cd3b457457",
+      "createdAt": "2026-05-01T13:12:26.554Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "category names",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 18,
+      "success": true,
+      "id": "36ef34d3-5a50-4a78-943e-d688a91b1bb5",
+      "createdAt": "2026-05-01T13:12:43.921Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "gell all sku",
+      "intent": "search-items",
+      "toolCalls": [
+        "search-items"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 11,
+      "success": true,
+      "id": "43d7b8c6-1e6b-4a5a-ae79-14d44a533067",
+      "createdAt": "2026-05-01T13:15:39.630Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all category name",
+      "intent": "custom-query",
+      "toolCalls": [
+        "category-list"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 8143,
+      "success": true,
+      "id": "fa0c56d9-bf23-4b62-ae14-2606bc571f66",
+      "createdAt": "2026-05-01T13:15:56.664Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all inventoy names",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 12,
+      "success": true,
+      "id": "09301394-69ff-42b3-852b-c06bb8d6e01d",
+      "createdAt": "2026-05-01T13:16:16.120Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get total stock quantity",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 282,
+      "success": true,
+      "id": "cb4ec7b7-a6ca-4135-a5ed-522626604e03",
+      "createdAt": "2026-05-01T13:17:28.398Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "sum of stock qty",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 17,
+      "success": true,
+      "id": "03940ab6-438a-488e-98cb-615ceb3646c0",
+      "createdAt": "2026-05-01T13:19:03.427Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "total stock",
+      "intent": "custom-query",
+      "toolCalls": [
+        "stock-total-quantity"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 35,
+      "success": true,
+      "id": "8a060a6a-5508-4285-80ab-9da9507ebd15",
+      "createdAt": "2026-05-01T13:19:16.770Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get total stock quantity",
+      "intent": "custom-query",
+      "toolCalls": [
+        "stock-total-quantity"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 2,
+      "success": true,
+      "id": "0defaab6-0267-4600-bbd2-1bda68952edb",
+      "createdAt": "2026-05-01T13:19:40.088Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "sum of stock qty",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 12,
+      "success": true,
+      "id": "11fc4cc8-0fb1-432f-a2b2-22b2bd8f57f8",
+      "createdAt": "2026-05-01T13:19:53.899Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "sum of stock qty",
+      "intent": "custom-query",
+      "toolCalls": [
+        "stock-total-quantity"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 7,
+      "success": true,
+      "id": "ce973fc1-033b-4075-98f8-2b6211bc200b",
+      "createdAt": "2026-05-01T13:20:57.883Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "sum of stock qty",
+      "intent": "custom-query",
+      "toolCalls": [
+        "stock-total-quantity"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 5,
+      "success": true,
+      "id": "4c67bf8d-48e1-43a2-a7bc-dd314b88d7be",
+      "createdAt": "2026-05-01T13:28:59.947Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get total stock quantity",
+      "intent": "custom-query",
+      "toolCalls": [
+        "stock-total-quantity"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 9,
+      "success": true,
+      "id": "e444a2d5-b0c5-47db-b450-a2d21a642ac1",
+      "createdAt": "2026-05-01T13:46:58.183Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "total reserved",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 21,
+      "success": true,
+      "id": "bba23642-6580-419a-a05a-5b73c6a5a411",
+      "createdAt": "2026-05-01T13:47:13.743Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Top fast and slow movers for 90 days",
+      "intent": "movers",
+      "toolCalls": [
+        "movers"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 300,
+      "success": true,
+      "id": "518c8258-d5e9-4352-aa49-87eb94aa77dd",
+      "createdAt": "2026-05-01T13:49:24.705Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Profit loss for last 30 days",
+      "intent": "profit-loss",
+      "toolCalls": [
+        "profit-loss"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 4,
+      "success": true,
+      "id": "0ae0b6b1-614c-4af1-965d-22770725fa4c",
+      "createdAt": "2026-05-01T13:49:45.792Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "hi",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 13,
+      "success": true,
+      "id": "b3dfd1d8-d849-4896-beae-49e5892f0d38",
+      "createdAt": "2026-05-01T13:50:13.184Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "hi",
+      "intent": "greeting",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 8,
+      "success": true,
+      "id": "cfcae2da-64c3-4714-bed4-d21b0b01b971",
+      "createdAt": "2026-05-01T13:56:33.594Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "thanks",
+      "intent": "thanks",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 0,
+      "success": true,
+      "id": "78755495-6b57-4122-bcef-61b9ff6f1908",
+      "createdAt": "2026-05-01T13:56:40.175Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "hi",
+      "intent": "greeting",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 3,
+      "success": true,
+      "id": "9f7aaab1-90cd-4440-8c80-fa8f64016e30",
+      "createdAt": "2026-05-01T13:59:50.363Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all category names",
+      "intent": "custom-query",
+      "toolCalls": [
+        "category-list"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 8065,
+      "success": true,
+      "id": "a722fd4a-8e4b-4f4b-8c4c-cd63a0f191dc",
+      "createdAt": "2026-05-01T14:00:12.235Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "get all category names",
+      "intent": "custom-query",
+      "toolCalls": [
+        "category-list"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 8011,
+      "success": true,
+      "id": "6c5de0db-cd2e-4717-8eea-328b99ffeb64",
+      "createdAt": "2026-05-01T14:00:45.858Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "ok",
+      "intent": "acknowledgement",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 0,
+      "success": true,
+      "id": "aa41b9eb-8973-4b03-95f7-fd02560a2a7f",
+      "createdAt": "2026-05-01T14:01:31.066Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "thanks",
+      "intent": "thanks",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 0,
+      "success": true,
+      "id": "7f12ee32-4881-4c7f-90d0-a8d424b64750",
+      "createdAt": "2026-05-01T14:01:40.084Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Show low stock items",
+      "intent": "low-stock",
+      "toolCalls": [
+        "low-stock"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 42,
+      "success": true,
+      "id": "08b928f9-d07e-4114-b2c0-b62afa231e5c",
+      "createdAt": "2026-05-12T15:03:15.050Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Profit loss for last 30 days",
+      "intent": "profit-loss",
+      "toolCalls": [
+        "profit-loss"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 17,
+      "success": true,
+      "id": "365d4478-5fa5-479e-8160-7330d452824b",
+      "createdAt": "2026-05-12T15:03:17.991Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Top fast and slow movers for 90 days",
+      "intent": "movers",
+      "toolCalls": [
+        "movers"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 11,
+      "success": true,
+      "id": "af242c8d-7a6d-43d8-8ca4-7f9442117a7d",
+      "createdAt": "2026-05-12T15:03:29.829Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Total Users",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 82,
+      "success": true,
+      "id": "63837928-675f-460c-adf0-acab2b1517f3",
+      "createdAt": "2026-05-12T15:03:44.174Z"
+    },
+    {
+      "userId": "a9e814b1-a16f-416a-b178-22249ce97c52",
+      "role": "ADMIN",
+      "message": "Get All users",
+      "intent": "custom-query",
+      "toolCalls": [
+        "users-list"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 1296,
+      "success": true,
+      "id": "86139a21-f8c4-49a6-a27d-6fe2f72fcfcf",
+      "createdAt": "2026-05-13T07:34:41.820Z"
+    }
+  ]
+}

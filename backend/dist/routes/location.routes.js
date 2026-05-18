@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const location_controller_1 = require("../controllers/location.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/scan/:code', (0, auth_middleware_1.authorizePermission)('items.read'), location_controller_1.locationController.scan);
+router.get('/:id/items', (0, auth_middleware_1.authorizePermission)('items.read'), location_controller_1.locationController.items);
+router.get('/', (0, auth_middleware_1.authorizePermission)('items.read'), location_controller_1.locationController.list);
+router.post('/', (0, auth_middleware_1.authorizePermission)('categories.manage'), (0, validate_middleware_1.validate)(validation_schemas_1.locationSchema), location_controller_1.locationController.create);
+exports.default = router;

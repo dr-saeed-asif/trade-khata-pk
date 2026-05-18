@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const customer_controller_1 = require("../controllers/customer.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/', (0, auth_middleware_1.authorizePermission)('customers.read'), customer_controller_1.customerController.list);
+router.get('/:id', (0, auth_middleware_1.authorizePermission)('customers.read'), customer_controller_1.customerController.getById);
+router.post('/', (0, auth_middleware_1.authorizePermission)('customers.manage'), (0, validate_middleware_1.validate)(validation_schemas_1.customerSchema), customer_controller_1.customerController.create);
+router.patch('/:id', (0, auth_middleware_1.authorizePermission)('customers.manage'), (0, validate_middleware_1.validate)(validation_schemas_1.customerUpdateSchema), customer_controller_1.customerController.update);
+router.delete('/:id', (0, auth_middleware_1.authorizePermission)('customers.manage'), customer_controller_1.customerController.delete);
+exports.default = router;

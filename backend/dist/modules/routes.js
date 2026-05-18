@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_routes_1 = __importDefault(require("../routes/auth.routes"));
+const item_routes_1 = __importDefault(require("../routes/item.routes"));
+const category_routes_1 = __importDefault(require("../routes/category.routes"));
+const qr_routes_1 = __importDefault(require("../routes/qr.routes"));
+const scan_routes_1 = __importDefault(require("../routes/scan.routes"));
+const report_routes_1 = __importDefault(require("../routes/report.routes"));
+const stock_routes_1 = __importDefault(require("../routes/stock.routes"));
+const admin_routes_1 = __importDefault(require("./admin/admin.routes"));
+const router = (0, express_1.Router)();
+router.use('/auth', auth_routes_1.default);
+router.use('/items', item_routes_1.default);
+router.use('/categories', category_routes_1.default);
+router.use('/qr', qr_routes_1.default);
+router.use('/scan', scan_routes_1.default);
+router.use('/reports', report_routes_1.default);
+router.use('/stock', stock_routes_1.default);
+router.use('/admin', admin_routes_1.default);
+exports.default = router;

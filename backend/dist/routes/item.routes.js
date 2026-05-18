@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const multer_1 = __importDefault(require("multer"));
+const item_controller_1 = require("../controllers/item.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage() });
+router.use(auth_middleware_1.authenticate);
+router.post('/', (0, auth_middleware_1.authorizePermission)('items.create'), (0, validate_middleware_1.validate)(validation_schemas_1.itemSchema), item_controller_1.itemController.create);
+router.post('/import', (0, auth_middleware_1.authorizePermission)('items.import'), upload.single('file'), item_controller_1.itemController.import);
+router.post('/catalog/sync', (0, auth_middleware_1.authorizePermission)('items.import'), item_controller_1.itemController.syncCatalog);
+router.get('/catalog', (0, auth_middleware_1.authorizePermission)('items.read'), item_controller_1.itemController.catalog);
+router.get('/', (0, auth_middleware_1.authorizePermission)('items.read'), item_controller_1.itemController.list);
+router.get('/:id/timeline', (0, auth_middleware_1.authorizePermission)('items.timeline.read'), item_controller_1.itemController.timeline);
+router.get('/:id', (0, auth_middleware_1.authorizePermission)('items.read'), item_controller_1.itemController.getById);
+router.put('/:id', (0, auth_middleware_1.authorizePermission)('items.update'), (0, validate_middleware_1.validate)(validation_schemas_1.itemUpdateSchema), item_controller_1.itemController.update);
+router.delete('/:id', (0, auth_middleware_1.authorizePermission)('items.delete'), item_controller_1.itemController.delete);
+exports.default = router;

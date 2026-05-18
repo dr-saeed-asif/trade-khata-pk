@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const stock_controller_1 = require("../controllers/stock.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.post('/in', (0, auth_middleware_1.authorizePermission)('stock.write'), (0, validate_middleware_1.validate)(validation_schemas_1.stockInSchema), stock_controller_1.stockController.stockIn);
+router.post('/out', (0, auth_middleware_1.authorizePermission)('stock.write'), (0, validate_middleware_1.validate)(validation_schemas_1.stockOutSchema), stock_controller_1.stockController.stockOut);
+router.post('/transfer', (0, auth_middleware_1.authorizePermission)('stock.write'), (0, validate_middleware_1.validate)(validation_schemas_1.stockTransferSchema), stock_controller_1.stockController.transfer);
+router.post('/adjustment', (0, auth_middleware_1.authorizePermission)('stock.write'), (0, validate_middleware_1.validate)(validation_schemas_1.stockAdjustmentSchema), stock_controller_1.stockController.adjust);
+router.get('/history', (0, auth_middleware_1.authorizePermission)('stock.read'), stock_controller_1.stockController.history);
+exports.default = router;

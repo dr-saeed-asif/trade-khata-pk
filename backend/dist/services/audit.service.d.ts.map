@@ -1,0 +1,1 @@
+{"version":3,"file":"audit.service.d.ts","sourceRoot":"","sources":["../../src/services/audit.service.ts"],"names":[],"mappings":"AAEA,UAAU,YAAY;IACpB,UAAU,EAAE,MAAM,CAAA;IAClB,QAAQ,EAAE,MAAM,CAAA;IAChB,OAAO,CAAC,EAAE,OAAO,CAAA;IACjB,OAAO,CAAC,EAAE,OAAO,CAAA;IACjB,MAAM,CAAC,EAAE,MAAM,CAAA;IACf,MAAM,CAAC,EAAE,MAAM,CAAA;CAChB;AAED,eAAO,MAAM,YAAY;sBACC,YAAY;;;;;;;;;;CAWrC,CAAA"}

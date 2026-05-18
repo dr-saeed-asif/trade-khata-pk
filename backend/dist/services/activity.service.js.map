@@ -1,0 +1,1 @@
+{"version":3,"file":"activity.service.js","sourceRoot":"","sources":["../../src/services/activity.service.ts"],"names":[],"mappings":";;;AAAA,6CAAyC;AAW5B,QAAA,eAAe,GAAG;IAC7B,MAAM,EAAE,KAAK,EAAE,OAAwB,EAAE,EAAE,CACzC,eAAM,CAAC,WAAW,CAAC,MAAM,CAAC;QACxB,IAAI,EAAE,OAAO;KACd,CAAC;CACL,CAAA"}

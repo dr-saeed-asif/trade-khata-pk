@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const invoice_controller_1 = require("../controllers/invoice.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/', (0, auth_middleware_1.authorizePermission)('invoices.read'), invoice_controller_1.invoiceController.list);
+router.get('/:id', (0, auth_middleware_1.authorizePermission)('invoices.read'), invoice_controller_1.invoiceController.getById);
+router.post('/', (0, auth_middleware_1.authorizePermission)('invoices.create'), (0, validate_middleware_1.validate)(validation_schemas_1.invoiceCreateSchema), invoice_controller_1.invoiceController.create);
+router.patch('/:id', (0, auth_middleware_1.authorizePermission)('invoices.update'), (0, validate_middleware_1.validate)(validation_schemas_1.invoiceUpdateSchema), invoice_controller_1.invoiceController.update);
+router.post('/:id/confirm', (0, auth_middleware_1.authorizePermission)('invoices.confirm'), invoice_controller_1.invoiceController.confirm);
+router.post('/:id/cancel', (0, auth_middleware_1.authorizePermission)('invoices.cancel'), invoice_controller_1.invoiceController.cancel);
+router.post('/:id/refund', (0, auth_middleware_1.authorizePermission)('invoices.refund'), (0, validate_middleware_1.validate)(validation_schemas_1.invoiceRefundSchema), invoice_controller_1.invoiceController.refund);
+router.post('/:id/payments', (0, auth_middleware_1.authorizePermission)('payments.create'), (0, validate_middleware_1.validate)(validation_schemas_1.paymentOnInvoiceSchema), invoice_controller_1.invoiceController.recordPayment);
+exports.default = router;

@@ -1,0 +1,120 @@
+{
+  "ui": {
+    "en": {
+      "title": "Inventories",
+      "searchPlaceholder": "Search inventory…",
+      "categoryPlaceholder": "Filter category",
+      "locationPlaceholder": "Filter location",
+      "lowStockOnly": "Low stock only",
+      "expiredOnly": "Expired only",
+      "importing": "Importing…",
+      "importCsv": "Import CSV/Excel",
+      "exportCsvExcel": "Export CSV/Excel",
+      "exporting": "Exporting…",
+      "addItem": "+ Add Item",
+      "catalogTitle": "Grocery name reference (Pakistan)",
+      "catalogHint": "Click a name to search. Toggle English / اردو for labels.",
+      "applyCategory": "Use category filter",
+      "localeEn": "English",
+      "localeUr": "اردو"
+    },
+    "ur": {
+      "title": "انوینٹری",
+      "searchPlaceholder": "انوینٹری تلاش کریں…",
+      "categoryPlaceholder": "زمرہ فلٹر",
+      "locationPlaceholder": "مقام فلٹر",
+      "lowStockOnly": "صرف کم اسٹاک",
+      "expiredOnly": "صرف میعاد ختم",
+      "importing": "درآمد ہو رہی ہے…",
+      "importCsv": "CSV/Excel درآمد",
+      "exportCsvExcel": "CSV/Excel برآمد",
+      "exporting": "برآمد ہو رہی ہے…",
+      "addItem": "+ آئٹم شامل کریں",
+      "catalogTitle": "گروسری نام (تلاش کے لیے انگریزی نام استعمال ہوتا ہے)",
+      "catalogHint": "تلاش کے لیے نام پر کلک کریں۔ لیبل کے لیے زبان بدلیں۔",
+      "applyCategory": "زمرہ فلٹر لگائیں",
+      "localeEn": "English",
+      "localeUr": "اردو"
+    }
+  },
+  "categories": [
+    {
+      "id": "dry-foods-pantry",
+      "nameEn": "Dry Foods & Pantry Staples",
+      "nameUr": "خشک اشیاء",
+      "items": [
+        { "id": "rice", "nameEn": "Rice", "nameUr": "چاول", "roman": "Chawal" },
+        { "id": "wheat-flour", "nameEn": "Wheat Flour", "nameUr": "آٹا", "roman": "Aata" },
+        { "id": "sugar", "nameEn": "Sugar", "nameUr": "چینی", "roman": "Cheeni" },
+        { "id": "cooking-oil", "nameEn": "Cooking Oil", "nameUr": "کوکنگ آئل / تیل", "roman": "Cooking Oil / Tel" },
+        { "id": "ghee-butter", "nameEn": "Ghee / Butter", "nameUr": "گھی", "roman": "Ghee" },
+        { "id": "tea", "nameEn": "Tea", "nameUr": "چائے", "roman": "Chai" },
+        { "id": "semolina", "nameEn": "Semolina", "nameUr": "سوجی", "roman": "Sooji" },
+        { "id": "vermicelli", "nameEn": "Vermicelli", "nameUr": "سویاں", "roman": "Sawayan" },
+        { "id": "jaggery", "nameEn": "Jaggery", "nameUr": "گڑ", "roman": "Gur" },
+        { "id": "vinegar", "nameEn": "Vinegar", "nameUr": "سرکہ", "roman": "Sirka" }
+      ]
+    },
+    {
+      "id": "pulses-beans-lentils",
+      "nameEn": "Pulses, Beans & Lentils",
+      "nameUr": "دالیں اور خشک بیج",
+      "items": [
+        { "id": "chana-daal", "nameEn": "Split Bengal Gram (Chana Daal)", "nameUr": "چنا دال", "roman": "Chana Daal" },
+        { "id": "masoor-daal", "nameEn": "Red Lentils (Masoor Daal)", "nameUr": "مسور دال", "roman": "Masoor Daal" },
+        { "id": "moong-daal", "nameEn": "Yellow Lentils (Moong Daal)", "nameUr": "مونگ دال", "roman": "Moong Daal" },
+        { "id": "mash-daal", "nameEn": "White Lentils (Mash Daal)", "nameUr": "ماش دال", "roman": "Mash Daal" },
+        { "id": "black-gram", "nameEn": "Black Gram (Sabut Mash / Kaali Daal)", "nameUr": "ثابت ماش / کالی دال", "roman": "Sabut Mash / Kaali Daal" },
+        { "id": "chickpeas-white", "nameEn": "Chickpeas (White)", "nameUr": "سفید چنے / چھولے", "roman": "Sufaid Chole" },
+        { "id": "chickpeas-black", "nameEn": "Chickpeas (Black)", "nameUr": "کالے چنے", "roman": "Kalay Chane" },
+        { "id": "red-kidney-beans", "nameEn": "Red Kidney Beans", "nameUr": "لال لوبیا", "roman": "Laal Lobia" },
+        { "id": "black-eyed-peas", "nameEn": "Black Eyed Peas", "nameUr": "سفید لوبیا", "roman": "Lobia / Sufaid Lobia" },
+        { "id": "arhar-daal", "nameEn": "Pigeon Pea (Arhar Daal)", "nameUr": "ارہر دال", "roman": "Arhar Daal" },
+        { "id": "sabut-moong", "nameEn": "Green Gram (Sabut Moong)", "nameUr": "ثابت مونگ", "roman": "Sabut Moong" }
+      ]
+    },
+    {
+      "id": "spices",
+      "nameEn": "Spices",
+      "nameUr": "مصالحے",
+      "items": [
+        { "id": "chili-turmeric", "nameEn": "Chili / Turmeric", "nameUr": "سرخ مرچ / ہلدی", "roman": "Surkh Mirch / Haldi" },
+        { "id": "cumin-coriander", "nameEn": "Cumin / Coriander", "nameUr": "زیرہ / دھنیا", "roman": "Zeera / Dhania" },
+        { "id": "pepper-cloves", "nameEn": "Peppercorn / Cloves", "nameUr": "کالی مرچ / لونگ", "roman": "Kali Mirch / Long" },
+        { "id": "cardamom", "nameEn": "Cardamom (Green / Black)", "nameUr": "چھوٹی / بڑی الائچی", "roman": "Choti / Bari Elaichi" },
+        { "id": "cinnamon-fennel", "nameEn": "Cinnamon / Fennel", "nameUr": "دارچینی / سونف", "roman": "Darchini / Saunf" },
+        { "id": "fenugreek-nigella", "nameEn": "Fenugreek / Nigella", "nameUr": "میتھی / کلونجی", "roman": "Methi / Kalonji" },
+        { "id": "other-spices", "nameEn": "Other Spices (Ajwain, Imli, Anaar Dana, Heeng)", "nameUr": "اجوائن / املی / انار دانہ / ہینگ", "roman": "Ajwain / Imli / Anaar Dana / Heeng" }
+      ]
+    },
+    {
+      "id": "dry-fruits-nuts",
+      "nameEn": "Dry Fruits & Nuts",
+      "nameUr": "خشک میوہ جات",
+      "items": [
+        { "id": "almond", "nameEn": "Almond", "nameUr": "بادام", "roman": "Baadaam" },
+        { "id": "cashew", "nameEn": "Cashew", "nameUr": "کاجو", "roman": "Kaaju" },
+        { "id": "raisins", "nameEn": "Raisins", "nameUr": "کشمش", "roman": "Kishmish" },
+        { "id": "dates", "nameEn": "Dates", "nameUr": "کھجور", "roman": "Khajoor" },
+        { "id": "fig-dried", "nameEn": "Dried Fig", "nameUr": "انجیر", "roman": "Anjeer" },
+        { "id": "apricot-dried", "nameEn": "Dried Apricot", "nameUr": "خوبانی", "roman": "Khubaani" },
+        { "id": "coconut-dried", "nameEn": "Coconut (dried)", "nameUr": "ناریل", "roman": "Nariyal" },
+        { "id": "poppy-seeds", "nameEn": "Poppy seeds", "nameUr": "خشخاش", "roman": "Khus Khas" },
+        { "id": "sesame-seeds", "nameEn": "Sesame seeds", "nameUr": "تل", "roman": "Til" }
+      ]
+    },
+    {
+      "id": "other-essentials",
+      "nameEn": "Other Essential Grocery Items",
+      "nameUr": "دیگر اشیاء",
+      "items": [
+        { "id": "salt", "nameEn": "Salt", "nameUr": "نمک", "roman": "Namak" },
+        { "id": "pickle", "nameEn": "Pickle (Achar)", "nameUr": "اچار", "roman": "Achar" },
+        { "id": "garlic", "nameEn": "Garlic", "nameUr": "لہسن", "roman": "Lahsun" },
+        { "id": "ginger", "nameEn": "Ginger", "nameUr": "ادرک", "roman": "Adrak" },
+        { "id": "onion", "nameEn": "Onion", "nameUr": "پیاز", "roman": "Pyaaz" },
+        { "id": "green-chili", "nameEn": "Green Chili", "nameUr": "ہری مرچ", "roman": "Hari Mirch" }
+      ]
+    }
+  ]
+}

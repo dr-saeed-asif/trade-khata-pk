@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const print_settings_controller_1 = require("../controllers/print-settings.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+router.get('/', print_settings_controller_1.printSettingsController.get);
+router.patch('/', auth_middleware_1.authenticate, (0, auth_middleware_1.authorizePermission)('print-settings.manage'), (0, validate_middleware_1.validate)(validation_schemas_1.printSettingsSchema), print_settings_controller_1.printSettingsController.update);
+exports.default = router;

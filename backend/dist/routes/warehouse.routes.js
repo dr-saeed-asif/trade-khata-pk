@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const warehouse_controller_1 = require("../controllers/warehouse.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/', (0, auth_middleware_1.authorizePermission)('items.read'), warehouse_controller_1.warehouseController.list);
+router.post('/', (0, auth_middleware_1.authorizePermission)('categories.manage'), (0, validate_middleware_1.validate)(validation_schemas_1.warehouseSchema), warehouse_controller_1.warehouseController.create);
+exports.default = router;

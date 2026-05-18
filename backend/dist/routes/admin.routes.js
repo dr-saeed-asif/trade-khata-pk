@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const admin_controller_1 = require("../controllers/admin.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const validate_middleware_1 = require("../middleware/validate.middleware");
+const validation_schemas_1 = require("../utils/validation-schemas");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/users', (0, auth_middleware_1.authorizePermission)('users.read'), admin_controller_1.adminController.users);
+router.post('/users', (0, auth_middleware_1.authorizePermission)('users.create'), (0, validate_middleware_1.validate)(validation_schemas_1.adminUserCreateSchema), admin_controller_1.adminController.createUser);
+router.put('/users/:id', (0, auth_middleware_1.authorizePermission)('users.update'), (0, validate_middleware_1.validate)(validation_schemas_1.adminUserUpdateSchema), admin_controller_1.adminController.updateUser);
+router.delete('/users/:id', (0, auth_middleware_1.authorizePermission)('users.delete'), admin_controller_1.adminController.deleteUser);
+router.get('/roles', (0, auth_middleware_1.authorizePermission)('roles.read'), admin_controller_1.adminController.roles);
+router.post('/roles', (0, auth_middleware_1.authorizePermission)('roles.create'), (0, validate_middleware_1.validate)(validation_schemas_1.adminRoleCreateSchema), admin_controller_1.adminController.createRole);
+router.put('/roles/:id', (0, auth_middleware_1.authorizePermission)('roles.update'), (0, validate_middleware_1.validate)(validation_schemas_1.adminRoleUpdateSchema), admin_controller_1.adminController.updateRole);
+router.delete('/roles/:id', (0, auth_middleware_1.authorizePermission)('roles.delete'), admin_controller_1.adminController.deleteRole);
+exports.default = router;

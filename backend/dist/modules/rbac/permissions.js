@@ -1,0 +1,61 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.hasPermission = exports.rolePermissions = exports.permissionKeys = void 0;
+exports.permissionKeys = [
+    'dashboard.read',
+    'items.read',
+    'items.create',
+    'items.update',
+    'items.delete',
+    'items.import',
+    'items.timeline.read',
+    'categories.read',
+    'categories.manage',
+    'stock.read',
+    'stock.write',
+    'scan.create',
+    'qr.read',
+    'reports.read',
+    'reports.export',
+    'users.read',
+    'users.create',
+    'users.update',
+    'users.delete',
+    'roles.read',
+    'roles.create',
+    'roles.update',
+    'roles.delete',
+    'settings.read',
+];
+exports.rolePermissions = {
+    ADMIN: new Set(exports.permissionKeys),
+    MANAGER: new Set([
+        'dashboard.read',
+        'items.read',
+        'items.create',
+        'items.update',
+        'items.import',
+        'items.timeline.read',
+        'categories.read',
+        'categories.manage',
+        'stock.read',
+        'stock.write',
+        'scan.create',
+        'qr.read',
+        'reports.read',
+        'settings.read',
+    ]),
+    USER: new Set([
+        'dashboard.read',
+        'items.read',
+        'items.timeline.read',
+        'categories.read',
+        'stock.read',
+        'scan.create',
+        'qr.read',
+        'reports.read',
+        'settings.read',
+    ]),
+};
+const hasPermission = (role, permission) => exports.rolePermissions[role]?.has(permission) ?? false;
+exports.hasPermission = hasPermission;

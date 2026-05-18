@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const report_controller_1 = require("../controllers/report.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticate);
+router.get('/export-csv', (0, auth_middleware_1.authorizePermission)('reports.export'), report_controller_1.reportController.exportCsv);
+router.get('/export-excel', (0, auth_middleware_1.authorizePermission)('reports.export'), report_controller_1.reportController.exportExcel);
+router.get('/low-stock', (0, auth_middleware_1.authorizePermission)('reports.read'), report_controller_1.reportController.lowStock);
+router.get('/recent', (0, auth_middleware_1.authorizePermission)('reports.read'), report_controller_1.reportController.recent);
+router.get('/movement-trend', (0, auth_middleware_1.authorizePermission)('reports.read'), report_controller_1.reportController.movementTrend);
+router.get('/movers', (0, auth_middleware_1.authorizePermission)('reports.read'), report_controller_1.reportController.movers);
+router.get('/profit-loss', (0, auth_middleware_1.authorizePermission)('reports.read'), report_controller_1.reportController.profitLoss);
+exports.default = router;
