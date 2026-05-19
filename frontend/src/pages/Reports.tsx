@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import QRCode from 'qrcode'
+import { qrCodeToDataUrl } from '@/lib/qr-code'
 import { inventoryService } from '@/services/inventory.service'
 import type { MoversReport, MovementTrendReport, ProfitLossReport } from '@/services/inventory.service'
 import { Card } from '@/components/ui/card'
@@ -81,7 +81,7 @@ export const ReportsPage = () => {
   const exportQrs = async () => {
     const response = await inventoryService.list({ page: 1, pageSize: 50 })
     for (const item of response.data) {
-      const dataUrl = await QRCode.toDataURL(item.qrValue)
+      const dataUrl = await qrCodeToDataUrl(item.qrValue)
       const anchor = document.createElement('a')
       anchor.href = dataUrl
       anchor.download = `${item.sku}.png`

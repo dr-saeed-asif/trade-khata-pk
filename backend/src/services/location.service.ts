@@ -1,5 +1,6 @@
 import { prisma } from '../config/prisma'
 import { ApiError } from '../utils/api-error'
+import { buildLocationCodeWhere } from '../utils/code-lookup'
 import { domainEvents } from '../architecture/domain-events'
 
 const normalizeSegment = (value: string) => value.trim().toUpperCase().replace(/\s+/g, '-')
@@ -75,11 +76,8 @@ export const locationService = {
   },
 
   scanByCode: async (code: string) => {
-    const trimmed = code.trim()
     const location = await prisma.storageLocation.findFirst({
-      where: {
-        OR: [{ qrValue: trimmed }, { barcodeValue: trimmed }],
-      },
+      where: buildLocationCodeWhere(code),
       include: {
         warehouse: true,
         items: {

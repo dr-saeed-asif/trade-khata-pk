@@ -3,13 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.scanService = void 0;
 const prisma_1 = require("../config/prisma");
 const api_error_1 = require("../utils/api-error");
+const code_lookup_1 = require("../utils/code-lookup");
 const activity_service_1 = require("./activity.service");
 exports.scanService = {
     create: async (qrCode, note, userId) => {
         const item = await prisma_1.prisma.item.findFirst({
-            where: {
-                OR: [{ qrValue: qrCode }, { barcodeValue: qrCode }],
-            },
+            where: (0, code_lookup_1.buildItemCodeWhere)(qrCode),
         });
         if (!item)
             throw new api_error_1.ApiError(404, 'Item not found for provided code');

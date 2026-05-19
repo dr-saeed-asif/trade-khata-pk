@@ -8,7 +8,6 @@ import type { InventoryItem } from '@/types'
 interface InventoryTableProps {
   items: InventoryItem[]
   canQrRead: boolean
-  canQrExport: boolean
   canUpdate: boolean
   canDelete: boolean
   page: number
@@ -17,8 +16,6 @@ interface InventoryTableProps {
   onPageChange: (page: number) => void
   onShowQr: (item: InventoryItem) => void
   onShowBarcode: (item: InventoryItem) => void
-  onDownloadQr: (item: InventoryItem) => void
-  onDownloadBarcode: (item: InventoryItem) => void
   onView: (item: InventoryItem) => void
   onEdit: (item: InventoryItem) => void
   onDelete: (item: InventoryItem) => void
@@ -27,7 +24,6 @@ interface InventoryTableProps {
 export const InventoryTable = ({
   items,
   canQrRead,
-  canQrExport,
   canUpdate,
   canDelete,
   page,
@@ -36,8 +32,6 @@ export const InventoryTable = ({
   onPageChange,
   onShowQr,
   onShowBarcode,
-  onDownloadQr,
-  onDownloadBarcode,
   onView,
   onEdit,
   onDelete,
@@ -47,7 +41,7 @@ export const InventoryTable = ({
   return (
   <>
     <div className="max-h-[60vh] overflow-y-auto overflow-x-auto pb-2 pr-1">
-      <table className="min-w-[1950px] table-fixed text-left text-sm">
+      <table className="min-w-[1830px] table-fixed text-left text-sm">
         <thead>
           <tr className="border-b">
             <th className="sticky top-0 z-10 w-[200px] whitespace-nowrap bg-white px-3 py-2">Name (EN / اردو)</th>
@@ -63,7 +57,7 @@ export const InventoryTable = ({
             <th className="sticky top-0 z-10 w-[160px] whitespace-nowrap bg-white px-3 py-2">Created At</th>
             <th className="sticky top-0 z-10 w-[160px] whitespace-nowrap bg-white px-3 py-2">Updated At</th>
             <th className="sticky top-0 z-10 w-[220px] whitespace-nowrap bg-white px-3 py-2">Codes</th>
-            <th className="sticky top-0 z-10 w-[340px] whitespace-nowrap bg-white px-3 py-2">Actions</th>
+            <th className="sticky top-0 z-10 w-[220px] whitespace-nowrap bg-white px-3 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -93,12 +87,6 @@ export const InventoryTable = ({
                   ) : null}
                 </td>
                 <td className="space-x-1 whitespace-nowrap px-3 py-3">
-                  {canQrExport ? (
-                    <>
-                      <Button type="button" variant="outline" onClick={() => onDownloadQr(item)}>Download QR</Button>
-                      <Button type="button" variant="outline" onClick={() => onDownloadBarcode(item)}>Download Barcode</Button>
-                    </>
-                  ) : null}
                   <Button type="button" variant="default" onClick={() => onView(item)}>View</Button>
                   {canUpdate ? <Button type="button" variant="contained" onClick={() => onEdit(item)}>Edit</Button> : null}
                   {canDelete ? <Button type="button" variant="destructive" onClick={() => onDelete(item)}>Delete</Button> : null}

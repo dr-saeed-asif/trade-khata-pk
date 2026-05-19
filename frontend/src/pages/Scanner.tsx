@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
 import * as QRScannerLib from '@yudiel/react-qr-scanner'
 import { Card } from '@/components/ui/card'
@@ -22,10 +22,17 @@ export const ScannerPage = () => {
   const [error, setError] = useState('')
   const [manualCode, setManualCode] = useState('')
   const [scanTarget, setScanTarget] = useState<'item' | 'location'>('item')
+  const manualInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (scanTarget === 'item' && !canScanItems && canScanLocations) setScanTarget('location')
     if (scanTarget === 'location' && !canScanLocations && canScanItems) setScanTarget('item')
+  }, [scanTarget, canScanItems, canScanLocations])
+
+  useEffect(() => {
+    if (canScanItems || canScanLocations) {
+      manualInputRef.current?.focus()
+    }
   }, [scanTarget, canScanItems, canScanLocations])
 
   const resolveCode = async (rawCode: string) => {
@@ -77,7 +84,8 @@ export const ScannerPage = () => {
       {canScanItems || canScanLocations ? (
         <div className="flex items-center gap-2">
           <Input
-            placeholder={`Enter ${scanTarget} barcode/QR manually`}
+            ref={manualInputRef}
+            placeholder={`Scan or type ${scanTarget} barcode / QR (USB scanner supported)`}
             value={manualCode}
             onChange={(event) => setManualCode(event.target.value)}
             onKeyDown={(event) => {
@@ -86,6 +94,7 @@ export const ScannerPage = () => {
                 void resolveCode(manualCode)
               }
             }}
+            autoComplete="off"
             className="max-w-md"
           />
           <Button type="button" variant="outline" onClick={() => void resolveCode(manualCode)}>Find</Button>

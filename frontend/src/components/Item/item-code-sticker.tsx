@@ -8,7 +8,7 @@ interface ItemCodeStickerProps {
   className?: string
 }
 
-const BARCODE_MAX_WIDTH = 'max-w-[280px]'
+const BARCODE_MAX_WIDTH = 'max-w-[200px]'
 
 export const ItemCodeSticker = ({ label, imageUrl, codeType, className }: ItemCodeStickerProps) => {
   const expiryText = formatItemExpiryLabel(label)
@@ -26,7 +26,7 @@ export const ItemCodeSticker = ({ label, imageUrl, codeType, className }: ItemCo
         className,
       )}
     >
-      <div className={cn(codeColumnClass, 'flex flex-col gap-2')}>
+      <div className={cn(codeColumnClass, 'flex flex-col')}>
         <p className="min-w-0 truncate text-sm font-bold text-slate-900">
           {typeof label.price === 'number' ? currency(label.price) : '—'}
         </p>

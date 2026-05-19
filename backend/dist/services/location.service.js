@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.locationService = void 0;
 const prisma_1 = require("../config/prisma");
 const api_error_1 = require("../utils/api-error");
+const code_lookup_1 = require("../utils/code-lookup");
 const domain_events_1 = require("../architecture/domain-events");
 const normalizeSegment = (value) => value.trim().toUpperCase().replace(/\s+/g, '-');
 const createLocationCodes = (warehouseCode, shelf, rack, bin) => {
@@ -63,11 +64,8 @@ exports.locationService = {
         });
     },
     scanByCode: async (code) => {
-        const trimmed = code.trim();
         const location = await prisma_1.prisma.storageLocation.findFirst({
-            where: {
-                OR: [{ qrValue: trimmed }, { barcodeValue: trimmed }],
-            },
+            where: (0, code_lookup_1.buildLocationCodeWhere)(code),
             include: {
                 warehouse: true,
                 items: {

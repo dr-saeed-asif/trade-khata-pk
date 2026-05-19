@@ -4,6 +4,7 @@ exports.itemService = void 0;
 const client_1 = require("@prisma/client");
 const prisma_1 = require("../config/prisma");
 const api_error_1 = require("../utils/api-error");
+const code_lookup_1 = require("../utils/code-lookup");
 const qr_1 = require("../utils/qr");
 const alert_service_1 = require("./alert.service");
 const item_catalog_service_1 = require("./item-catalog.service");
@@ -347,9 +348,7 @@ exports.itemService = {
     },
     getByCode: async (code) => {
         const item = await prisma_1.prisma.item.findFirst({
-            where: {
-                OR: [{ qrValue: code }, { barcodeValue: code }],
-            },
+            where: (0, code_lookup_1.buildItemCodeWhere)(code),
             include: itemInclude,
         });
         if (!item)
@@ -389,6 +388,7 @@ exports.itemService = {
                 data: {
                     name: input.name,
                     sku: input.sku,
+                    ...(input.sku !== undefined ? { barcodeValue: (0, qr_1.generateBarcodeValue)(input.sku) } : {}),
                     categoryId: input.categoryId,
                     quantity: input.quantity,
                     reservedQty: input.reservedQty,

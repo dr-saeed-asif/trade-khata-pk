@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-import QRCode from 'qrcode'
-import { itemSchema, type ItemInput } from '@/lib/validators'
+import { useNavigate } from 'react-router-dom'
 import { barcodeToDataUrl } from '@/lib/barcode'
+import { qrCodeToDataUrl } from '@/lib/qr-code'
+import { itemSchema, type ItemInput } from '@/lib/validators'
 import { inventoryService } from '@/services/inventory.service'
 import { categoryService } from '@/services/category.service'
 import { useToast } from '@/hooks/use-toast'
 import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import type { Category } from '@/types'
 import { groceryCatalogData } from '@/lib/grocery-catalog'
 import { ItemForm } from '@/components/Item/Item-form'
@@ -18,7 +20,10 @@ const staticCatalogNames = Array.from(
   ),
 ).sort((left, right) => left.localeCompare(right))
 
+const INVENTORY_PATH = '/admin/inventory'
+
 export const AddItemPage = () => {
+  const navigate = useNavigate()
   const { toast } = useToast()
   const [qrImage, setQrImage] = useState<string>('')
   const [barcodeImage, setBarcodeImage] = useState<string>('')
@@ -78,7 +83,7 @@ export const AddItemPage = () => {
         expiryDate: item.expiryDate,
         price: item.price,
       })
-      setQrImage(await QRCode.toDataURL(item.qrValue))
+      setQrImage(await qrCodeToDataUrl(item.qrValue))
       setBarcodeImage(barcodeToDataUrl(item.barcodeValue))
       toast({ title: 'Item created successfully' })
     } finally {
@@ -102,7 +107,12 @@ export const AddItemPage = () => {
 
   return (
     <Card className="space-y-4">
-      <h2 className="text-lg font-semibold">Add Item</h2>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-lg font-semibold">Add Item</h2>
+        <Button type="button" variant="outline" onClick={() => navigate(INVENTORY_PATH)}>
+          Back to list
+        </Button>
+      </div>
       <ItemForm form={form} categories={categories} itemOptions={itemOptions} errors={errors} isSubmitting={isSubmitting} onFormChange={(field, value) => setForm((prev) => ({ ...prev, [field]: value }))} onSubmit={() => void onSubmit(form)} />
       <ItemTable label={codeLabel} qrImage={qrImage} barcodeImage={barcodeImage} onDownload={downloadGeneratedCode} />
     </Card>

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import QRCode from 'qrcode'
+import { Printer } from 'lucide-react'
 import { barcodeToDataUrl } from '@/lib/barcode'
+import { qrCodeToDataUrl } from '@/lib/qr-code'
+import { printItemCodeSticker } from '@/lib/print-item-code'
 import { inventoryService } from '@/services/inventory.service'
 import type { InventoryItem } from '@/types'
 import { Card } from '@/components/ui/card'
@@ -56,7 +58,6 @@ export const InventoryListPage = () => {
   const canUpdateItem = hasPermission(user?.role, 'items.update', user?.permissions)
   const canDeleteItem = hasPermission(user?.role, 'items.delete', user?.permissions)
   const canReadQr = hasPermission(user?.role, 'qr.read', user?.permissions)
-  const canExportQr = hasPermission(user?.role, 'qr.export', user?.permissions)
   const canExportInventory = hasPermission(user?.role, 'reports.export', user?.permissions)
 
   const formatDateTime = (value?: string) => (value ? new Date(value).toLocaleString() : '-')
@@ -111,37 +112,9 @@ export const InventoryListPage = () => {
     })
   }, [debouncedSearch, debouncedCategory, debouncedLocation, lowStockOnly, expiredOnly, page, sortBy, sortOrder])
 
-  const downloadQr = async (value: string, sku: string) => {
-    const dataUrl = await QRCode.toDataURL(value)
-    const response = await fetch(dataUrl)
-    const blob = await response.blob()
-    const objectUrl = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = objectUrl
-    anchor.download = `${sku}.png`
-    document.body.appendChild(anchor)
-    anchor.click()
-    anchor.remove()
-    URL.revokeObjectURL(objectUrl)
-  }
-
-  const downloadBarcode = async (value: string, sku: string) => {
-    const dataUrl = barcodeToDataUrl(value)
-    const response = await fetch(dataUrl)
-    const blob = await response.blob()
-    const objectUrl = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = objectUrl
-    anchor.download = `${sku}-barcode.png`
-    document.body.appendChild(anchor)
-    anchor.click()
-    anchor.remove()
-    URL.revokeObjectURL(objectUrl)
-  }
-
   const showQr = async (item: InventoryItem) => {
     try {
-      const imageUrl = await QRCode.toDataURL(item.qrValue)
+      const imageUrl = await qrCodeToDataUrl(item.qrValue)
       setCodePreview({
         type: 'qr',
         title: `${item.name} QR Code`,
@@ -177,6 +150,17 @@ export const InventoryListPage = () => {
         variant: 'error',
       })
     }
+  }
+
+  const handlePrintCodePreview = () => {
+    if (!codePreview) return
+    printItemCodeSticker({
+      label: codePreview.label,
+      imageUrl: codePreview.imageUrl,
+      codeType: codePreview.type,
+      title: codePreview.title,
+      sku: codePreview.sku,
+    })
   }
 
   const confirmDelete = async () => {
@@ -310,7 +294,6 @@ export const InventoryListPage = () => {
       <InventoryTable
         items={items}
         canQrRead={canReadQr}
-        canQrExport={canExportQr || canReadQr}
         canUpdate={canUpdateItem}
         canDelete={canDeleteItem}
         page={page}
@@ -319,8 +302,6 @@ export const InventoryListPage = () => {
         onPageChange={setPage}
         onShowQr={(item) => void showQr(item)}
         onShowBarcode={(item) => void showBarcode(item)}
-        onDownloadQr={(item) => void downloadQr(item.qrValue, item.sku)}
-        onDownloadBarcode={(item) => void downloadBarcode(item.barcodeValue, item.sku)}
         onView={(item) => setViewItem(item)}
         onEdit={(item) => navigateToEdit(navigate, INVENTORY_PATH, item.id)}
         onDelete={setItemToDelete}
@@ -377,24 +358,35 @@ export const InventoryListPage = () => {
           </div>
         </div>
       ) : null}
-      {codePreview ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-          <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <p className="text-lg font-semibold text-slate-900">{codePreview.title}</p>
-              <Button type="button" variant="outline" onClick={() => setCodePreview(null)}>
-                Close
-              </Button>
-            </div>
+      <Modal
+        open={Boolean(codePreview)}
+        title={codePreview?.title}
+        onClose={() => setCodePreview(null)}
+        panelClassName="max-w-lg"
+        bodyClassName="p-4 sm:p-5"
+        footer={
+          <div className="flex flex-wrap justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => setCodePreview(null)}>
+              Close
+            </Button>
+            <Button type="button" className="gap-1.5" onClick={handlePrintCodePreview}>
+              <Printer className="h-4 w-4" />
+              Print
+            </Button>
+          </div>
+        }
+      >
+        {codePreview ? (
+          <>
             <ItemCodeSticker
               label={codePreview.label}
               imageUrl={codePreview.imageUrl}
               codeType={codePreview.type}
             />
             <p className="mt-3 text-center text-xs text-slate-500">SKU: {codePreview.sku}</p>
-          </div>
-        </div>
-      ) : null}
+          </>
+        ) : null}
+      </Modal>
     </Card>
   )
 }

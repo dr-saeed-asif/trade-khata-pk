@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { prisma } from '../config/prisma'
 import { ApiError } from '../utils/api-error'
+import { buildItemCodeWhere } from '../utils/code-lookup'
 import { generateBarcodeValue, generateQrValue } from '../utils/qr'
 import { alertService } from './alert.service'
 import { itemCatalogService } from './item-catalog.service'
@@ -423,9 +424,7 @@ export const itemService = {
 
   getByCode: async (code: string) => {
     const item = await prisma.item.findFirst({
-      where: {
-        OR: [{ qrValue: code }, { barcodeValue: code }],
-      },
+      where: buildItemCodeWhere(code),
       include: itemInclude,
     })
     if (!item) throw new ApiError(404, 'Item not found for provided code')
@@ -467,6 +466,7 @@ export const itemService = {
         data: {
           name: input.name,
           sku: input.sku,
+          ...(input.sku !== undefined ? { barcodeValue: generateBarcodeValue(input.sku) } : {}),
           categoryId: input.categoryId,
           quantity: input.quantity,
           reservedQty: input.reservedQty,
