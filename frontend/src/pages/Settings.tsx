@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 
 type IntegrationStatus = 'connected' | 'disconnected' | 'needs-setup'
 type IntegrationConfig = { id: string; name: string; status: IntegrationStatus; endpoint: string; apiKey: string }
@@ -46,8 +47,16 @@ export const SettingsPage = () => {
         {integrations.map((integration) => (
           <Card key={integration.id} className="space-y-3 p-5">
             <h3 className="text-lg font-semibold">{integration.name}</h3>
-            <Input value={integration.endpoint} onChange={(event) => updateIntegration(integration.id, { endpoint: event.target.value })} placeholder="Endpoint URL" />
-            <Input value={integration.apiKey} onChange={(event) => updateIntegration(integration.id, { apiKey: event.target.value })} placeholder="API Key" />
+            <Input
+              value={integration.endpoint}
+              onChange={(event) => updateIntegration(integration.id, { endpoint: event.target.value })}
+              placeholder={formPlaceholders.settings.endpoint}
+            />
+            <Input
+              value={integration.apiKey}
+              onChange={(event) => updateIntegration(integration.id, { apiKey: event.target.value })}
+              placeholder={formPlaceholders.settings.apiKey}
+            />
             <div className="flex gap-2">
               <Button type="button" onClick={() => updateIntegration(integration.id, { status: 'connected' })}>Test Connection</Button>
               <Button type="button" variant="outline" onClick={() => updateIntegration(integration.id, { status: 'disconnected' })}>Disconnect</Button>

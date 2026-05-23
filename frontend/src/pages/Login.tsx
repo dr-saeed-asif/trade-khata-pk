@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { APP_NAME, APP_TAGLINE, appLogo } from '@/lib/branding'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { loginSchema, type LoginInput } from '@/lib/validators'
 import {
   clearRememberedLogin,
@@ -128,7 +129,7 @@ export const LoginPage = () => {
                 <Input
                   id="login-identifier"
                   autoComplete="username"
-                  placeholder="email@company.com or username"
+                  placeholder={formPlaceholders.auth.loginId}
                   className="h-11 border-slate-200/80 bg-white/90 shadow-sm transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/30"
                   value={form.identifier}
                   onChange={(event) => setForm((prev) => ({ ...prev, identifier: event.target.value }))}
@@ -149,7 +150,7 @@ export const LoginPage = () => {
                     id="login-password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
-                    placeholder="••••••••"
+                    placeholder={formPlaceholders.auth.password}
                     className="h-11 border-slate-200/80 bg-white/90 pr-11 shadow-sm transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/30"
                     value={form.password}
                     onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}

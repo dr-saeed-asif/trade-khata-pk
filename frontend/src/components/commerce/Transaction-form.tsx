@@ -1,4 +1,5 @@
 import { InventoryItemPicker } from '@/components/commerce/inventory-item-picker'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { InventoryItem, Party } from '@/types'
@@ -96,12 +97,16 @@ export const TransactionForm = ({
             min={0}
             value={numberInputValue(discount)}
             onChange={(e) => onDiscountChange(e.target.value === '' ? 0 : Number(e.target.value) || 0)}
-            placeholder="0"
+            placeholder={formPlaceholders.commerce.discount}
           />
         </div>
         <div className="space-y-1 md:col-span-2">
           <label className="text-sm font-medium text-slate-700">Notes</label>
-          <Input value={notes} onChange={(e) => onNotesChange(e.target.value)} placeholder="Optional notes" />
+          <Input
+            value={notes}
+            onChange={(e) => onNotesChange(e.target.value)}
+            placeholder={formPlaceholders.commerce.notes}
+          />
         </div>
       </div>
 
@@ -127,7 +132,7 @@ export const TransactionForm = ({
               onChange={(e) =>
                 updateLine(index, { quantity: e.target.value === '' ? 0 : Number(e.target.value) || 0 })
               }
-              placeholder="Quantity"
+              placeholder={formPlaceholders.commerce.quantity}
               aria-label="Quantity"
             />
             <Input
@@ -138,7 +143,7 @@ export const TransactionForm = ({
               onChange={(e) =>
                 updateLine(index, { unitPrice: e.target.value === '' ? 0 : Number(e.target.value) || 0 })
               }
-              placeholder="Unit price (Rs)"
+              placeholder={formPlaceholders.commerce.unitPrice}
               aria-label="Unit price"
             />
           </div>

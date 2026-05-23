@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { lookupGroceryItemUrduName } from '@/lib/grocery-catalog'
 import type { InventoryItem } from '@/types'
 
@@ -61,7 +62,7 @@ export const InventoryItemPicker = ({ items, value, onChange, 'aria-label': aria
         onBlur={() => {
           window.setTimeout(() => setIsOpen(false), 120)
         }}
-        placeholder="Search item (English / اردو)..."
+        placeholder={formPlaceholders.commerce.searchItem}
         aria-label={ariaLabel ?? 'Item'}
         autoComplete="off"
       />

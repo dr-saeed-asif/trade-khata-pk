@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { FilterBar } from '@/components/ui/filter-bar'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { filterClearButtonClass, selectClass } from '@/lib/form-styles'
 import { cn } from '@/lib/utils'
 import type { PartyType } from '@/types'
@@ -24,7 +25,7 @@ export const PartyListFilters = ({ values, onChange, onClear }: PartyListFilters
       <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-center">
         <Input
           className="md:min-w-[14rem] md:flex-1"
-          placeholder="Search name, phone, or email..."
+          placeholder={formPlaceholders.party.search}
           value={values.search}
           onChange={(e) => onChange({ ...values, search: e.target.value })}
         />

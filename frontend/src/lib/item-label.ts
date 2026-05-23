@@ -34,10 +34,13 @@ export const formatItemLabelTitle = (info: Pick<ItemLabelInfo, 'name' | 'weight'
   return `${name} (${weight})`
 }
 
-/** Text shown on barcode/QR labels beside the code. */
+const toSingleLine = (value: string) => value.replace(/\s+/g, ' ').trim()
+
+/** Text shown on barcode/QR labels beside the code (always one line). */
 export const formatItemExpiryLabel = (info: Pick<ItemLabelInfo, 'expiryMessage' | 'expiryDate'>) => {
   const parts: string[] = []
-  if (info.expiryMessage?.trim()) parts.push(info.expiryMessage.trim())
+  if (info.expiryMessage?.trim()) parts.push(toSingleLine(info.expiryMessage))
   if (info.expiryDate) parts.push(`Exp: ${formatExpiryDate(info.expiryDate)}`)
-  return parts.join(' · ') || undefined
+  const line = parts.join(' · ')
+  return line || undefined
 }

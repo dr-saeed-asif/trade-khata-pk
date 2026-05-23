@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Bot, Send, Sparkles, User } from 'lucide-react'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { aiService } from '@/services/ai.service'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -55,8 +56,8 @@ export const AiAssistant = ({ className }: { className?: string }) => {
   const canSend = prompt.trim().length > 1 && !loading
 
   const placeholder = useMemo(() => {
-    if (loading) return 'Generating response...'
-    return 'Ask anything about inventory...'
+    if (loading) return formPlaceholders.ai.loading
+    return formPlaceholders.ai.idle
   }, [loading])
 
   const sendMessage = async (rawMessage?: string) => {

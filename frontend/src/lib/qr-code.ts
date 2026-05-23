@@ -1,4 +1,5 @@
 import QRCode from 'qrcode'
+import { mmToDots } from '@/lib/label-printer'
 
 /** QR error correction levels (approximate damage recovery). */
 export const QR_ERROR_CORRECTION_LEVELS = {
@@ -16,9 +17,14 @@ export const DEFAULT_QR_ERROR_CORRECTION: QrErrorCorrectionLevel = 'H'
 export const qrCodeToDataUrl = (
   value: string,
   errorCorrectionLevel: QrErrorCorrectionLevel = DEFAULT_QR_ERROR_CORRECTION,
+  width = 512,
 ) =>
   QRCode.toDataURL(value, {
     errorCorrectionLevel,
-    margin: 2,
-    width: 512,
+    margin: 1,
+    width,
   })
+
+/** Small QR for 50×25mm thermal labels. */
+export const qrCodeToDataUrlForLabel = (value: string) =>
+  qrCodeToDataUrl(value, DEFAULT_QR_ERROR_CORRECTION, mmToDots(14))

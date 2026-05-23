@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { APP_NAME, APP_TAGLINE, appLogo } from '@/lib/branding'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { Card } from '@/components/ui/card'
 import { authService } from '@/services/auth.service'
 import { cn } from '@/lib/utils'
@@ -72,7 +73,7 @@ export const ForgotPasswordPage = () => {
                 id="forgot-email"
                 type="email"
                 autoComplete="email"
-                placeholder="you@company.com"
+                placeholder={formPlaceholders.auth.forgotEmail}
                 className="h-11 border-slate-200/80 bg-white/90"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { stockService, type StockMovement } from '@/services/stock.service'
@@ -81,13 +82,13 @@ export const StockOperationsPage = () => {
           <>
             <div className="grid gap-2 md:grid-cols-2">
               <Input
-                placeholder="Item ID"
+                placeholder={formPlaceholders.stock.itemId}
                 value={itemId}
                 onChange={(event) => setItemId(event.target.value)}
               />
               <Input
                 type="number"
-                placeholder="Quantity"
+                placeholder={formPlaceholders.stock.quantity}
                 value={String(quantity)}
                 onChange={(event) => setQuantity(Number(event.target.value || 0))}
               />

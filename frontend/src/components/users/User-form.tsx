@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 
 interface UserFormProps {
   isCreate: boolean
@@ -41,19 +42,27 @@ export const UserForm = ({
     <div className="grid gap-4 md:grid-cols-2">
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Name</label>
-        <Input value={name} onChange={(event) => onNameChange(event.target.value)} placeholder="Enter full name" />
+        <Input
+          value={name}
+          onChange={(event) => onNameChange(event.target.value)}
+          placeholder={formPlaceholders.user.fullName}
+        />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Username</label>
         <Input
           value={username}
           onChange={(event) => onUsernameChange(event.target.value)}
-          placeholder="Login username (optional)"
+          placeholder={formPlaceholders.user.username}
         />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Email</label>
-        <Input value={email} onChange={(event) => onEmailChange(event.target.value)} placeholder="Enter email" />
+        <Input
+          value={email}
+          onChange={(event) => onEmailChange(event.target.value)}
+          placeholder={formPlaceholders.user.email}
+        />
       </div>
       <div>
         <label className="mb-1 block text-sm font-medium text-slate-700">Role</label>
@@ -77,7 +86,7 @@ export const UserForm = ({
           type="password"
           value={password}
           onChange={(event) => onPasswordChange(event.target.value)}
-          placeholder={!isCreate ? 'Leave empty to keep current password' : 'Enter password'}
+          placeholder={!isCreate ? formPlaceholders.user.passwordKeep : formPlaceholders.user.password}
         />
       </div>
     </div>

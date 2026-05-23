@@ -134,7 +134,7 @@ export const InventoryListPage = () => {
 
   const showBarcode = (item: InventoryItem) => {
     try {
-      const imageUrl = barcodeToDataUrl(item.barcodeValue)
+      const imageUrl = barcodeToDataUrl(item.barcodeValue, { forPreview: true })
       setCodePreview({
         type: 'barcode',
         title: `${item.name} Barcode`,
@@ -154,12 +154,14 @@ export const InventoryListPage = () => {
 
   const handlePrintCodePreview = () => {
     if (!codePreview) return
-    printItemCodeSticker({
+    void printItemCodeSticker({
       label: codePreview.label,
       imageUrl: codePreview.imageUrl,
       codeType: codePreview.type,
+      codeValue: codePreview.value,
       title: codePreview.title,
       sku: codePreview.sku,
+      copies: 1,
     })
   }
 
@@ -382,8 +384,8 @@ export const InventoryListPage = () => {
               label={codePreview.label}
               imageUrl={codePreview.imageUrl}
               codeType={codePreview.type}
+              sku={codePreview.sku}
             />
-            <p className="mt-3 text-center text-xs text-slate-500">SKU: {codePreview.sku}</p>
           </>
         ) : null}
       </Modal>

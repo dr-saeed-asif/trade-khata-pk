@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 
 type MatrixAction = 'create' | 'edit' | 'delete' | 'view' | 'export'
 
@@ -37,7 +38,11 @@ export const RolesForm = ({
   <Card className="space-y-5 p-5 md:p-6">
     <div>
       <label className="mb-2 block text-sm font-semibold text-slate-700">Role Name *</label>
-      <Input value={name} onChange={(event) => onNameChange(event.target.value)} placeholder="Enter role name" />
+      <Input
+        value={name}
+        onChange={(event) => onNameChange(event.target.value)}
+        placeholder={formPlaceholders.role.name}
+      />
     </div>
 
     <div>

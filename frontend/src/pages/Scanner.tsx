@@ -6,6 +6,7 @@ import { inventoryService } from '@/services/inventory.service'
 import type { ScannedLocation } from '@/services/inventory.service'
 import type { InventoryItem } from '@/types'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { Button } from '@/components/ui/button'
 import { InventoryItemDetails } from '@/components/inventory/inventory-item-details'
 import { hasPermission } from '@/lib/permissions'
@@ -85,7 +86,7 @@ export const ScannerPage = () => {
         <div className="flex items-center gap-2">
           <Input
             ref={manualInputRef}
-            placeholder={`Scan or type ${scanTarget} barcode / QR (USB scanner supported)`}
+            placeholder={formPlaceholders.scanner.scan(scanTarget)}
             value={manualCode}
             onChange={(event) => setManualCode(event.target.value)}
             onKeyDown={(event) => {

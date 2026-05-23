@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { groceryUiStrings } from '@/lib/grocery-catalog'
 import { useUiStore } from '@/store/ui-store'
 
@@ -82,9 +83,9 @@ export const InventoryForm = ({
       </div>
 
       <div className="grid gap-2 md:grid-cols-5">
-        <Input placeholder={t.searchPlaceholder} value={search} onChange={(e) => onSearchChange(e.target.value)} />
-        <Input placeholder={t.categoryPlaceholder} value={category} onChange={(e) => onCategoryChange(e.target.value)} />
-        <Input placeholder={t.locationPlaceholder} value={location} onChange={(e) => onLocationChange(e.target.value)} />
+        <Input placeholder={formPlaceholders.inventory.search} value={search} onChange={(e) => onSearchChange(e.target.value)} />
+        <Input placeholder={formPlaceholders.inventory.category} value={category} onChange={(e) => onCategoryChange(e.target.value)} />
+        <Input placeholder={formPlaceholders.inventory.location} value={location} onChange={(e) => onLocationChange(e.target.value)} />
         <label className="flex h-10 items-center gap-2 rounded-md border border-slate-300 px-3 text-sm">
           <input type="checkbox" checked={lowStockOnly} onChange={(e) => onLowStockOnlyChange(e.target.checked)} />
           {t.lowStockOnly}

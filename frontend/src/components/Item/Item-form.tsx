@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { groceryCatalogData } from '@/lib/grocery-catalog'
 import type { Category } from '@/types'
 import type { ItemInput } from '@/lib/validators'
@@ -82,6 +83,7 @@ export const ItemForm = ({
         <div className="relative">
           <Input
             id="item-name"
+            placeholder={formPlaceholders.item.name}
             value={form.name}
             onChange={(event) => {
               const selectedName = event.target.value
@@ -137,7 +139,7 @@ export const ItemForm = ({
           value={form.categoryId}
           onChange={(event) => onFormChange('categoryId', event.target.value)}
         >
-          <option value="">Choose category</option>
+          <option value="">{formPlaceholders.item.category}</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {urduCategoryLookup.has(category.name)
@@ -155,6 +157,7 @@ export const ItemForm = ({
           id="item-price"
           type="number"
           step="0.01"
+          placeholder={formPlaceholders.item.price}
           value={form.price === 0 ? '' : String(form.price)}
           onChange={(event) => onFormChange('price', Number(event.target.value || 0))}
         />
@@ -166,6 +169,7 @@ export const ItemForm = ({
         <Input
           id="item-quantity"
           type="number"
+          placeholder={formPlaceholders.item.quantity}
           value={form.quantity === 0 ? '' : String(form.quantity)}
           onChange={(event) => onFormChange('quantity', Number(event.target.value || 0))}
         />
@@ -173,19 +177,29 @@ export const ItemForm = ({
 
       <div className="space-y-1.5">
         <FieldLabel htmlFor="item-supplier">Supplier (optional)</FieldLabel>
-        <Input id="item-supplier" value={form.supplier} onChange={(event) => onFormChange('supplier', event.target.value)} />
+        <Input
+          id="item-supplier"
+          placeholder={formPlaceholders.item.supplier}
+          value={form.supplier}
+          onChange={(event) => onFormChange('supplier', event.target.value)}
+        />
       </div>
 
       <div className="space-y-1.5">
         <FieldLabel htmlFor="item-location">Location (optional)</FieldLabel>
-        <Input id="item-location" value={form.location} onChange={(event) => onFormChange('location', event.target.value)} />
+        <Input
+          id="item-location"
+          placeholder={formPlaceholders.item.location}
+          value={form.location}
+          onChange={(event) => onFormChange('location', event.target.value)}
+        />
       </div>
 
       <div className="space-y-1.5">
         <FieldLabel htmlFor="item-weight">Weight (optional)</FieldLabel>
         <Input
           id="item-weight"
-          placeholder="e.g. 500g, 1 kg"
+          placeholder={formPlaceholders.item.weight}
           value={form.weight ?? ''}
           onChange={(event) => onFormChange('weight', event.target.value)}
         />
@@ -195,7 +209,7 @@ export const ItemForm = ({
         <FieldLabel htmlFor="item-expiry-message">Expiry message (optional)</FieldLabel>
         <Input
           id="item-expiry-message"
-          placeholder="e.g. Best before 6 months"
+          placeholder={formPlaceholders.item.expiryMessage}
           value={form.expiryMessage ?? ''}
           onChange={(event) => onFormChange('expiryMessage', event.target.value)}
         />
@@ -206,6 +220,7 @@ export const ItemForm = ({
         <Input
           id="item-expiry-date"
           type="date"
+          placeholder={formPlaceholders.item.expiryDate}
           value={form.expiryDate?.slice(0, 10) ?? ''}
           onChange={(event) => onFormChange('expiryDate', event.target.value || undefined)}
         />
@@ -215,7 +230,8 @@ export const ItemForm = ({
         <FieldLabel htmlFor="item-description">Description (optional)</FieldLabel>
         <textarea
           id="item-description"
-          className="min-h-24 w-full rounded-md border border-slate-300 p-3 text-sm"
+          className="min-h-24 w-full rounded-md border border-slate-300 p-3 text-sm placeholder:text-slate-400"
+          placeholder={formPlaceholders.item.description}
           value={form.description ?? ''}
           onChange={(event) => onFormChange('description', event.target.value)}
         />

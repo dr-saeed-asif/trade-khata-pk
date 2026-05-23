@@ -10,6 +10,7 @@ import { ListPageLayout } from '@/components/layout/list-page-layout'
 import { CategoryForm } from '@/components/categories/Category-form'
 import { CategoryTable } from '@/components/categories/Category-table'
 import { categoriesI18n } from '@/components/categories/i18n'
+import { formPlaceholders } from '@/lib/form-placeholders'
 import { useToast } from '@/hooks/use-toast'
 import { useAuthStore } from '@/store/auth-store'
 import { useUiStore } from '@/store/ui-store'
@@ -136,7 +137,7 @@ export const CategoriesPage = () => {
             <CategoryForm
               name={name}
               canManage
-              placeholder={t.categoryNamePlaceholder}
+              placeholder={formPlaceholders.category.name}
               submitLabel={saving ? 'Saving...' : isCreateRoute ? t.add : t.save}
               onNameChange={setName}
               onCancel={closeForm}
