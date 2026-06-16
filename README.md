@@ -1,310 +1,338 @@
-# QR Inventory Management — Frontend
+# Trade Khata PK — QR Inventory Management
 
-React + TypeScript + Vite web application for the QR Inventory Management system.  
-Provides a dashboard, inventory management, QR scanning/generation, category management, and reporting.
+Full-stack inventory management system with QR scanning, sales/purchases, stock operations, alerts, role-based access control, and an **AI Inventory Assistant** powered by LLM tool calling and conversation memory.
 
 ---
+
+## Highlights
+
+| Area | Features |
+|------|----------|
+| **Inventory** | Items, categories, batches, warehouses, low-stock & expiry alerts |
+| **Commerce** | Sales, purchases, parties (customers/suppliers), invoices |
+| **QR** | Generate/print QR & barcodes, camera scanner, scan history |
+| **Reports** | Low stock, movers, profit/loss, CSV/Excel export |
+| **Security** | JWT auth, RBAC permissions, audit trail |
+| **AI Copilot** | Natural-language inventory Q&A, tool calling, chat history, Qwen Cloud / OpenAI / Ollama |
+
+---
+
+## AI Inventory Assistant (New)
+
+The **AI Assistant** is a side-panel copilot available to users with the `ai.chat` permission (Admin & Manager by default).
+
+### What it can do
+
+- Answer questions about stock, low-stock items, expiring items, sales/purchase summaries
+- Call **permission-gated inventory tools** (read-only) to fetch live data from the database
+- Remember **conversation context** within a chat session (follow-ups like *"summarize these items"*)
+- Persist **chat history** — reopen past conversations with full message restore
+- Show structured **result blocks** (tables, metrics) and **RAG citations** when applicable
+- Fall back to **rule-based answers** when no LLM API key is configured
+
+### AI architecture (Phase 1)
+
+```
+User → Frontend AI Panel → POST /ai/chat
+  → Auth + RBAC (ai.chat)
+  → Short-term memory (AiConversation, AiMessage, AiSessionMemory)
+  → LLM tool-calling loop (Qwen Cloud / OpenAI-compatible / Ollama)
+  → Inventory read tools (getLowStockItems, getExpiringItems, …)
+  → AiTrace audit log (tokens, latency, tools used)
+```
+
+### Supported LLM providers
+
+| Provider | `LLM_PROVIDER` | Notes |
+|----------|----------------|-------|
+| **Qwen Cloud** (recommended) | `qwen` | DashScope OpenAI-compatible API |
+| OpenAI | `openai` | `https://api.openai.com/v1` |
+| Ollama (local) | `ollama` | No API key required |
+| Rule-based only | `rule-based` | Default; no external LLM |
+
+### AI API endpoints
+
+| Method | Path | Permission |
+|--------|------|------------|
+| `POST` | `/ai/chat` | `ai.chat` |
+| `GET` | `/ai/conversations` | `ai.chat` |
+| `POST` | `/ai/conversations` | `ai.chat` |
+| `GET` | `/ai/conversations/:id/messages` | `ai.chat` |
+| `GET` | `/ai/history` | `ai.chat` |
+| `GET` | `/ai/analytics` | `reports.read` |
+| `GET` | `/ai/rag/sources` | `settings.read` |
+| `POST` | `/ai/rag/documents` | `settings.read` |
+
+### AI inventory tools (read-only)
+
+`getInventorySummary`, `getLowStockItems`, `getExpiringItems`, `searchItemBySkuOrName`, `getItemDetails`, `getStockMovementHistory`, `getFastMovingItems`, `getSlowMovingItems`, `getReorderSuggestions`, `getSalesSummary`, `getPurchaseSummary`
+
+---
+
+# Frontend
+
+React + TypeScript + Vite web application.
 
 ## Tech Stack
 
 | Category | Library / Tool |
-|---|---|
+|----------|----------------|
 | Language | TypeScript |
 | Framework | React 19 + Vite |
-| Routing | `react-router-dom` v7 |
-| API client | `axios` |
-| State management | `zustand` |
-| Forms + validation | `react-hook-form` + `zod` + `@hookform/resolvers` |
-| QR scanning | `@yudiel/react-qr-scanner` |
-| QR generation | `qrcode` |
-| Charts | `recharts` |
-| Styling | Tailwind CSS v4 (`@tailwindcss/vite`) |
-| UI utilities | `clsx`, `tailwind-merge`, `tailwindcss-animate`, `class-variance-authority` |
-| Icons | `lucide-react` |
+| Routing | React Router v7 |
+| API client | Axios |
+| State | Zustand |
+| Forms | react-hook-form + zod |
+| QR | `@yudiel/react-qr-scanner`, `qrcode` |
+| Charts | recharts |
+| Styling | Tailwind CSS v4 |
+| Icons | lucide-react |
 
----
+## Key pages
 
-## Project Structure
+| Page | Description |
+|------|-------------|
+| Dashboard | Overview stats and charts |
+| Inventory | Item list, add/edit, import |
+| Sales / Purchases | Commerce transactions |
+| Parties | Customers & suppliers |
+| Stock Operations | IN/OUT/transfer/adjustment |
+| QR Scanner | Camera scan + item lookup |
+| Reports | Analytics and exports |
+| Alerts | Low stock, expiry, overstock |
+| Users / Roles | User management & RBAC |
+| **AI Assistant** | Side panel copilot (not a separate route) |
 
-```
-frontend/
-├── public/                  # Static assets
-├── src/
-│   ├── main.tsx             # App entry point
-│   ├── App.tsx              # Root component
-│   ├── router/
-│   │   └── app-router.tsx   # Route definitions (react-router-dom)
-│   ├── pages/               # Full-page route components
-│   │   ├── dashboard-page.tsx
-│   │   ├── inventory-list-page.tsx
-│   │   ├── add-item-page.tsx
-│   │   ├── categories-page.tsx
-│   │   ├── scanner-page.tsx
-│   │   ├── reports-page.tsx
-│   │   ├── settings-page.tsx
-│   │   └── login-page.tsx
-│   ├── components/          # Reusable UI components
-│   ├── services/            # Axios API call functions
-│   ├── store/               # Zustand state stores
-│   ├── hooks/               # Custom React hooks
-│   ├── types/               # Shared TypeScript types
-│   └── lib/                 # Utility helpers (e.g. clsx/tailwind-merge)
-├── index.html
-├── vite.config.ts
-└── package.json
-```
+## AI Assistant UI
 
----
+- Open via header button **AI Assistant**
+- Chat with quick prompts and structured tool results
+- **History** panel — browse and restore past conversations
+- **New chat** — start a fresh conversation thread
+- Conversation memory persists across page reloads (server-side)
 
-## Environment Variables
-
-The app reads environment variables from `frontend/.env`:
+## Frontend environment
 
 | Variable | Description | Default |
-|---|---|---|
-| `VITE_API_BASE_URL` | Base URL of the backend API | `http://localhost:4000` |
+|----------|-------------|---------|
+| `VITE_API_BASE_URL` | Backend API URL | `http://localhost:4000` |
 
-> All Vite environment variables must be prefixed with `VITE_` to be accessible in the browser.
-
----
-
-## Setup & Run
-
-From the `frontend/` directory:
+## Frontend setup
 
 ```bash
-# 1. Install dependencies
+cd frontend
 npm install
-
-# 2. Start the Vite development server
 npm run dev
 ```
 
-The app will be available at: **`http://localhost:5173`** (Vite default)
-
----
-
-## Scripts
+App runs at **`http://localhost:5173`**
 
 | Script | Description |
-|---|---|
-| `npm run dev` | Start Vite dev server with HMR |
-| `npm run build` | Type-check and produce a production build in `dist/` |
-| `npm run preview` | Serve the production build locally for testing |
-| `npm run lint` | Run ESLint across the project |
+|--------|-------------|
+| `npm run dev` | Dev server with HMR |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build |
+| `npm run lint` | ESLint |
 
 ---
 
-## Running with the Backend
+# Backend
 
-1. Start the backend API on **port 4000** (see `backend/README.md`)
-2. Ensure `frontend/.env` contains:
-   ```env
-   VITE_API_BASE_URL="http://localhost:4000"
-   ```
-3. Start the frontend dev server:
-   ```bash
-   npm run dev
-   ```
-
----
-
-## Implementations — What Exists in the Repo
-
-### Authentication (`login-page.tsx`)
-- Login form built with `react-hook-form` + `zod` validation
-- JWT token stored and managed via a Zustand auth store
-- Protected routes redirect unauthenticated users to login
-
-### Dashboard (`dashboard-page.tsx`)
-- Overview statistics (total items, categories, recent scans)
-- Charts and analytics powered by `recharts`
-
-### Inventory List (`inventory-list-page.tsx`)
-- Paginated/searchable table of all inventory items
-- Actions to view, edit, or delete items
-
-### Add / Edit Item (`add-item-page.tsx`)
-- Validated form (React Hook Form + Zod) to create or update items
-- Assigns items to categories
-
-### Categories (`categories-page.tsx`)
-- List, create, and manage item categories
-
-### QR Scanner (`scanner-page.tsx`)
-- Live camera-based QR code scanning via `@yudiel/react-qr-scanner`
-- Decoded item data is looked up and displayed instantly
-
-### Reports (`reports-page.tsx`)
-- View inventory and scan-activity reports
-- Data visualised with `recharts`; export options available
-
-### Settings (`settings-page.tsx`)
-- Application and user account settings (e.g. profile, password change)
-
-# QR Inventory Management — Backend
-
-Node.js + Express + TypeScript REST API for the QR Inventory Management system.  
-Handles authentication, inventory items, categories, QR code generation, scanning history, and reporting.
-
----
+Node.js + Express + TypeScript REST API with Prisma ORM.
 
 ## Tech Stack
 
 | Category | Library / Tool |
-|---|---|
+|----------|----------------|
 | Runtime | Node.js |
-| Language | TypeScript |
 | Framework | Express 5 |
-| ORM | Prisma |
-| Database | MySQL |
-| Auth | JSON Web Tokens (`jsonwebtoken`) + `bcrypt` |
-| Validation | `zod` |
-| Security | `helmet`, `cors` |
-| Logging | `morgan` |
-| Utilities | `uuid`, `csv-stringify`, `dotenv` |
-| Dev tooling | `tsx` (watch mode), TypeScript compiler |
+| ORM | Prisma 6 |
+| Database | **PostgreSQL** |
+| Auth | JWT + bcrypt |
+| Validation | Zod |
+| Security | helmet, cors |
 
----
-
-## Project Structure
+## Project structure
 
 ```
 backend/
-├── prisma/                  # Prisma schema and migration files
-├── prisma.config.ts         # Prisma configuration
+├── prisma/
+│   ├── schema.prisma          # Includes AI models (Phase 1)
+│   └── migrations/
 ├── src/
-│   ├── server.ts            # Entry point — starts the HTTP server
-│   ├── app.ts               # Express app setup (middleware, routes)
-│   ├── config/              # App-wide configuration (env, constants)
-│   ├── controllers/         # Request handlers (thin layer over services)
-│   ├── services/            # Business logic and database operations
-│   ├── routes/              # Express route definitions
-│   │   ├── auth.routes.ts
-│   │   ├── category.routes.ts
-│   │   ├── item.routes.ts
-│   │   ├── qr.routes.ts
-│   │   ├── report.routes.ts
-│   │   ├── scan.routes.ts
-│   │   └── index.ts
-│   ├── middleware/          # Auth, error handling, and request middleware
-│   ├── types/               # Shared TypeScript types/interfaces
-│   ├── utils/               # Helper functions
-│   └── scripts/
-│       └── seed-admin.ts    # Seeds the default admin user
+│   ├── server.ts
+│   ├── app.ts
+│   ├── config/                # env, permissions
+│   ├── controllers/           # incl. ai.controller.ts
+│   ├── routes/                # incl. ai.routes.ts
+│   ├── services/
+│   │   ├── ai/                # Copilot orchestration
+│   │   │   ├── llm/           # LLM service (tool calling, retries)
+│   │   │   ├── memory/        # Conversations & session memory
+│   │   │   ├── tools/         # Tool registry & executor
+│   │   │   └── trace/         # Audit logging
+│   │   ├── ai-observability/
+│   │   └── rag/               # Lexical RAG (document knowledge)
+│   └── scripts/               # Seed scripts
+├── .env.example
 └── package.json
 ```
 
----
+## Environment variables
 
-## Environment Variables
-
-Copy the example file and fill in your values:
+Copy and configure:
 
 ```bash
 cp .env.example .env
 ```
 
+### Core
+
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `JWT_SECRET` | JWT signing secret |
+| `JWT_EXPIRES_IN` | Token expiry (e.g. `1d`) |
+| `PORT` | API port (default `4000`) |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Admin seed credentials |
+
+### AI / LLM (backend only — never expose in frontend)
+
 | Variable | Description | Example |
-|---|---|---|
-| `DATABASE_URL` | MySQL connection string | `mysql://root:password@localhost:3306/qr_inventory` |
-| `JWT_SECRET` | Secret key used to sign JWTs | `replace-with-strong-secret` |
-| `JWT_EXPIRES_IN` | JWT expiry duration | `1d` |
-| `PORT` | Port the API server listens on | `4000` |
-| `ADMIN_NAME` | Display name for the seeded admin | `` |
-| `ADMIN_EMAIL` | Email for the seeded admin account | `` |
-| `ADMIN_PASSWORD` | Password for the seeded admin account | `` |
+|----------|-------------|---------|
+| `LLM_PROVIDER` | `qwen`, `openai`, `ollama`, or `rule-based` | `qwen` |
+| `LLM_API_KEY` | API key (Qwen Cloud / OpenAI) | `sk-ws-...` |
+| `LLM_BASE_URL` | OpenAI-compatible base URL | `https://dashscope-intl.aliyuncs.com/compatible-mode/v1` |
+| `LLM_MODEL` | Model name | `qwen-plus` |
+| `LLM_TEMPERATURE` | 0–1 | `0.2` |
+| `LLM_MAX_TOKENS` | Max response tokens | `800` |
+| `LLM_TIMEOUT_MS` | Request timeout | `30000` |
+| `LLM_MAX_RETRIES` | Retry count on 429/5xx | `2` |
+| `AI_MAX_CONTEXT_MESSAGES` | Messages sent to LLM per turn | `20` |
+| `AI_CONVERSATION_SUMMARY_THRESHOLD` | When to summarize long chats | `30` |
 
-> **Note:** `ADMIN_*` variables are only used by `npm run admin:seed`.
+### Qwen Cloud example
 
----
+```env
+LLM_PROVIDER=qwen
+LLM_API_KEY=sk-ws-your-key-from-qwencloud.com
+LLM_BASE_URL=https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+LLM_MODEL=qwen-plus
+```
 
-## Setup & Run
-
-From the `backend/` directory:
+## Backend setup
 
 ```bash
-# 1. Install dependencies
+cd backend
 npm install
-
-# 2. Generate the Prisma client
 npm run prisma:generate
-
-# 3. Run database migrations
-npm run prisma:migrate
-
-# 4. Start the development server (watch mode)
+npm run prisma:migrate    # or: npx prisma migrate deploy
+npm run db:seed           # optional demo data
 npm run dev
 ```
 
-The API will be available at: **`http://localhost:4000`**
-
----
+API runs at **`http://localhost:4000`**
 
 ## Scripts
 
 | Script | Description |
-|---|---|
-| `npm run dev` | Start dev server with hot-reload via `tsx watch` |
-| `npm run build` | Compile TypeScript to `dist/` |
-| `npm run start` | Run the compiled server from `dist/server.js` |
-| `npm run prisma:generate` | Regenerate the Prisma client after schema changes |
-| `npm run prisma:migrate` | Apply pending migrations to the database |
-| `npm run prisma:studio` | Open Prisma Studio (visual DB browser) |
-| `npm run admin:seed` | Seed the default admin user defined in `.env` |
+|--------|-------------|
+| `npm run dev` | Dev server (tsx watch) |
+| `npm run build` | Compile TypeScript |
+| `npm run start` | Run compiled server |
+| `npm run prisma:generate` | Regenerate Prisma client |
+| `npm run prisma:migrate` | Apply migrations (dev) |
+| `npm run prisma:studio` | Visual DB browser |
+| `npm run db:check` | Test PostgreSQL connection |
+| `npm run db:seed` | **Full seed** (admin, catalog, commerce, AI demo) |
+| `npm run admin:seed` | Admin user only |
+| `npm run inventory:seed` | Grocery catalog + demo quantities |
+| `npm run stock:seed` | Stock movement demo |
+| `npm run commerce:seed` | Parties, purchases, sales |
+| `npm run ai:seed` | AI demo conversation |
+
+## Database (Prisma + PostgreSQL)
+
+### Core models
+
+Users, Items, Categories, StockMovements, Sales, Purchases, Parties, Alerts, Warehouses, AuditTrail, …
+
+### AI models (Phase 1)
+
+| Model | Purpose |
+|-------|---------|
+| `AiConversation` | Chat sessions per user |
+| `AiMessage` | User/assistant messages |
+| `AiSessionMemory` | Session context & summaries |
+| `AiTrace` | Request audit (tokens, latency, tools) |
+| `AiToolCall` | Individual tool execution log |
+
+Apply the AI migration:
+
+```bash
+npx prisma migrate deploy
+# migration: 20260616120000_ai_copilot_phase1
+```
+
+## Seed data
+
+After migration, populate demo data:
+
+```bash
+npm run db:seed
+```
+
+Creates:
+- Admin + Manager users
+- 40+ grocery catalog items (with low-stock & expiring demos)
+- Stock movements, parties, purchases, sales
+- Sample AI conversation for copilot testing
+
+**Default logins** (from `.env`):
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@inventory.local` | `ChangeMe123!` |
+| Manager | `manager@inventory.local` | `ChangeMe123!` |
 
 ---
 
-## Database (Prisma + MySQL)
+## Running full stack
 
-1. Make sure MySQL is running and `DATABASE_URL` is set in `.env`.
-2. Apply migrations:
-   ```bash
-   npm run prisma:migrate
-   ```
-3. Regenerate the client whenever `prisma/schema.prisma` changes:
-   ```bash
-   npm run prisma:generate
-   ```
-4. Browse data visually:
-   ```bash
-   npm run prisma:studio
-   ```
+```bash
+# Terminal 1 — Backend
+cd backend && npm run dev
+
+# Terminal 2 — Frontend
+cd frontend && npm run dev
+```
+
+1. Open `http://localhost:5173`
+2. Login as admin or manager
+3. Click **AI Assistant** in the header
+4. Ask: *"Show low stock items"* or *"Get inventory summary"*
 
 ---
 
-## Implementations — What Exists in the Repo
+## Security notes
 
-### Authentication (`auth.routes.ts`)
-- User login and JWT token issuance
-- Password hashing with `bcrypt`
-- Token verification middleware protecting all private routes
+- Never commit `backend/.env` (contains API keys and DB credentials)
+- LLM API keys are **backend-only** — not sent to the browser
+- AI tools enforce RBAC per user role and permissions
+- Sensitive write actions via AI require future approval workflow (Phase 2+)
 
-### Inventory Items (`item.routes.ts`)
-- Create, read, update, and delete inventory items
-- Each item stores details such as name, description, quantity, and category
+---
 
-### Categories (`category.routes.ts`)
-- Manage item categories (create, list, update, delete)
-- Items are linked to categories for organised browsing
+## Roadmap (planned)
 
-### QR Codes (`qr.routes.ts`)
-- Generate QR codes for individual inventory items
-- QR data encodes item identifiers for quick lookup
+- Long-term memory across sessions (embeddings, user preferences)
+- Vector RAG with pgvector for company documents
+- Human approval for AI write actions
+- QR scan AI assistant & anomaly detection
+- Admin AI analytics dashboard
 
-### Scanning (`scan.routes.ts`)
-- Record scan events when a QR code is read
-- Maintains a scan history log per item
+---
 
-### Reports (`report.routes.ts`)
-- Generate inventory and scan activity reports
-- Supports CSV export via `csv-stringify`
-
-### Admin Seed Script (`src/scripts/seed-admin.ts`)
-- One-time script to insert the initial admin user into the database
-- Credentials are sourced from the `.env` file (`ADMIN_*` variables)
-
-### Image
+## Screenshot
 
 <img width="1908" height="862" alt="image" src="https://github.com/user-attachments/assets/561b643c-361c-4abe-a863-54f3b003bd78" />
-
