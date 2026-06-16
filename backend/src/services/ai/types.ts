@@ -22,6 +22,7 @@ export type ResultBlock = {
 
 export type ChatResult = {
   answer: string
+  conversationId: string
   intent: string
   toolCalls: string[]
   citations: Array<{ source: string; title: string; score: number }>

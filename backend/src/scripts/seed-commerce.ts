@@ -241,6 +241,10 @@ const seedSaleRecords = async (
 }
 
 const run = async () => {
+  await seedCommerce()
+}
+
+export const seedCommerce = async () => {
   const user = await prisma.user.findFirst({
     where: { role: 'ADMIN' },
     select: { id: true },
@@ -258,9 +262,11 @@ const run = async () => {
   console.log(`  Sales:     ${await prisma.sale.count()}`)
 }
 
-run()
+if (require.main === module) {
+  run()
   .catch((error) => {
     console.error(error)
     process.exit(1)
   })
   .finally(() => prisma.$disconnect())
+}

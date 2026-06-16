@@ -310,7 +310,7 @@ export const AppShell = () => {
               {canUseAi ? (
                 <Button variant="outline" onClick={() => setAssistantOpen((current) => !current)}>
                   <Bot className="h-4 w-4" />
-                  <span>{assistantOpen ? 'Hide AI' : 'Open AI'}</span>
+                  <span>{assistantOpen ? 'Hide Assistant' : 'AI Assistant'}</span>
                 </Button>
               ) : null}
           {canReadAlerts ? (

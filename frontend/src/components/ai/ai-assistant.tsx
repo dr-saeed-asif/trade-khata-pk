@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { Bot, Send, Sparkles, User } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Bot, History, MessageSquarePlus, Send, Sparkles, User } from 'lucide-react'
 import { formPlaceholders } from '@/lib/form-placeholders'
-import { aiService } from '@/services/ai.service'
+import { aiService, type AiConversationSummary } from '@/services/ai.service'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -36,22 +36,68 @@ const formatMetricLabel = (key: string) =>
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (char) => char.toUpperCase())
 
-const initialAssistantMessage: Message = {
+const formatRelativeTime = (value: string) => {
+  const date = new Date(value)
+  const diffMs = Date.now() - date.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  if (diffMins < 1) return 'Just now'
+  if (diffMins < 60) return `${diffMins}m ago`
+  const diffHours = Math.floor(diffMins / 60)
+  if (diffHours < 24) return `${diffHours}h ago`
+  const diffDays = Math.floor(diffHours / 24)
+  if (diffDays < 7) return `${diffDays}d ago`
+  return date.toLocaleDateString()
+}
+
+const welcomeMessage = (): Message => ({
   id: crypto.randomUUID(),
   role: 'assistant',
   content: 'Ask me inventory questions. I can summarize reports, low stock, movers, and trends.',
   meta: 'System assistant',
+})
+
+const mapStoredMessage = (row: {
+  id: string
+  role: 'USER' | 'ASSISTANT' | 'SYSTEM' | 'TOOL'
+  content: string
+  metadata?: Record<string, unknown> | null
+  createdAt: string
+}): Message | null => {
+  if (row.role !== 'USER' && row.role !== 'ASSISTANT') return null
+
+  const metadata = row.metadata ?? {}
+  const provider = typeof metadata.provider === 'string' ? metadata.provider : undefined
+  const intent = typeof metadata.intent === 'string' ? metadata.intent : undefined
+  const metaParts = [new Date(row.createdAt).toLocaleString()]
+  if (intent) metaParts.unshift(`Intent: ${intent}`)
+  if (provider) metaParts.push(`Provider: ${provider}`)
+
+  return {
+    id: row.id,
+    role: row.role === 'USER' ? 'user' : 'assistant',
+    content: row.content,
+    meta: metaParts.join(' | '),
+    resultBlocks: Array.isArray(metadata.resultBlocks)
+      ? (metadata.resultBlocks as Message['resultBlocks'])
+      : undefined,
+    citations: Array.isArray(metadata.citations)
+      ? (metadata.citations as Message['citations'])
+      : undefined,
+  }
 }
 
 export const AiAssistant = ({ className }: { className?: string }) => {
   const [prompt, setPrompt] = useState('')
   const [loading, setLoading] = useState(false)
   const [historyLoading, setHistoryLoading] = useState(false)
+  const [conversationId, setConversationId] = useState<string | undefined>()
+  const [conversations, setConversations] = useState<AiConversationSummary[]>([])
+  const [historyOpen, setHistoryOpen] = useState(false)
   const [stats, setStats] = useState<{ totalRequests: number; avgLatencyMs: number } | null>(null)
   const [quickPrompts, setQuickPrompts] = useState(defaultQuickPrompts)
   const [thinkingText, setThinkingText] = useState('Thinking')
   const feedRef = useRef<HTMLDivElement | null>(null)
-  const [messages, setMessages] = useState<Message[]>([initialAssistantMessage])
+  const [messages, setMessages] = useState<Message[]>([welcomeMessage()])
 
   const canSend = prompt.trim().length > 1 && !loading
 
@@ -59,6 +105,38 @@ export const AiAssistant = ({ className }: { className?: string }) => {
     if (loading) return formPlaceholders.ai.loading
     return formPlaceholders.ai.idle
   }, [loading])
+
+  const loadConversations = useCallback(async () => {
+    try {
+      const rows = await aiService.listConversations(30)
+      setConversations(rows)
+      return rows
+    } catch {
+      return []
+    }
+  }, [])
+
+  const loadConversationMessages = useCallback(async (id: string) => {
+    setHistoryLoading(true)
+    try {
+      const rows = await aiService.getConversationMessages(id, 100)
+      const restored = rows.map(mapStoredMessage).filter((row): row is Message => row !== null)
+      setConversationId(id)
+      setMessages(restored.length ? restored : [welcomeMessage()])
+    } catch {
+      setMessages([welcomeMessage()])
+    } finally {
+      setHistoryLoading(false)
+    }
+  }, [])
+
+  const startNewChat = useCallback(async () => {
+    setConversationId(undefined)
+    setMessages([welcomeMessage()])
+    setPrompt('')
+    setQuickPrompts(defaultQuickPrompts)
+    setHistoryOpen(false)
+  }, [])
 
   const sendMessage = async (rawMessage?: string) => {
     const content = (rawMessage ?? prompt).trim()
@@ -75,7 +153,8 @@ export const AiAssistant = ({ className }: { className?: string }) => {
     setLoading(true)
 
     try {
-      const response = await aiService.chat(content)
+      const response = await aiService.chat(content, conversationId)
+      setConversationId(response.conversationId)
       setMessages((prev) => [
         ...prev,
         {
@@ -90,6 +169,7 @@ export const AiAssistant = ({ className }: { className?: string }) => {
       if (response.suggestions?.length) {
         setQuickPrompts(response.suggestions.slice(0, 4))
       }
+      void loadConversations()
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -108,45 +188,15 @@ export const AiAssistant = ({ className }: { className?: string }) => {
     }
   }
 
-  const clearChat = () => {
-    setMessages([
-      {
-        ...initialAssistantMessage,
-        id: crypto.randomUUID(),
-      },
-    ])
-    setPrompt('')
-    setQuickPrompts(defaultQuickPrompts)
-  }
-
   useEffect(() => {
     let cancelled = false
 
-    const loadHistory = async () => {
+    const bootstrap = async () => {
       setHistoryLoading(true)
       try {
-        const history = await aiService.history(6)
-        if (cancelled || !history.length) return
-
-        const restored: Message[] = []
-        for (const row of history.slice().reverse()) {
-          restored.push({
-            id: `${row.id}-user`,
-            role: 'user',
-            content: row.message,
-            meta: new Date(row.createdAt).toLocaleString(),
-          })
-          restored.push({
-            id: `${row.id}-assistant`,
-            role: 'assistant',
-            content: row.success ? `Intent: ${row.intent}. Tools used: ${row.toolCalls.join(', ') || 'none'}.` : `Failed request: ${row.errorMessage ?? 'Unknown error'}`,
-            meta: `Provider: ${row.provider} | Latency: ${row.latencyMs}ms`,
-          })
-        }
-        setMessages((prev) => {
-          const seed = prev[0] ? [prev[0]] : []
-          return [...seed, ...restored]
-        })
+        const rows = await loadConversations()
+        if (cancelled || !rows.length) return
+        await loadConversationMessages(rows[0].id)
       } finally {
         if (!cancelled) setHistoryLoading(false)
       }
@@ -163,13 +213,13 @@ export const AiAssistant = ({ className }: { className?: string }) => {
       }
     }
 
-    void loadHistory()
+    void bootstrap()
     void loadAnalytics()
 
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [loadConversationMessages, loadConversations])
 
   useEffect(() => {
     if (!loading) {
@@ -193,7 +243,7 @@ export const AiAssistant = ({ className }: { className?: string }) => {
     const node = feedRef.current
     if (!node) return
     node.scrollTop = node.scrollHeight
-  }, [messages, loading])
+  }, [messages, loading, historyOpen])
 
   return (
     <Card className={`flex h-full min-h-0 flex-col ${className ?? ''}`}>
@@ -202,23 +252,80 @@ export const AiAssistant = ({ className }: { className?: string }) => {
           <Bot className="h-4 w-4 text-slate-600" />
           <h3 className="text-sm font-semibold text-slate-900">AI Assistant</h3>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500">
-            {stats ? `7d req: ${stats.totalRequests} | avg ${stats.avgLatencyMs}ms` : 'Inventory copilot'}
+        <div className="flex items-center gap-1.5">
+          <span className="hidden text-xs text-slate-500 sm:inline">
+            {stats ? `7d: ${stats.totalRequests} req` : 'Inventory copilot'}
           </span>
+          <Button
+            type="button"
+            variant={historyOpen ? 'default' : 'outline'}
+            className="h-7 rounded-lg px-2 text-xs"
+            onClick={() => setHistoryOpen((open) => !open)}
+            disabled={loading}
+            title="Chat history"
+          >
+            <History className="h-3.5 w-3.5" />
+          </Button>
           <Button
             type="button"
             variant="outline"
             className="h-7 rounded-lg px-2 text-xs"
-            onClick={clearChat}
+            onClick={() => void startNewChat()}
             disabled={loading}
-            title="Clear chat"
+            title="New chat"
           >
-            Clear
+            <MessageSquarePlus className="h-3.5 w-3.5" />
           </Button>
         </div>
       </div>
-      {historyLoading ? <p className="mb-2 text-xs text-slate-500">Loading recent AI history...</p> : null}
+
+      {historyOpen ? (
+        <div className="mb-3 max-h-44 min-h-0 overflow-y-auto rounded-xl border border-slate-200/80 bg-gradient-to-b from-slate-50 via-white to-sky-50/50 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+          <p className="mb-2 px-1 text-xs font-semibold tracking-wide text-slate-600 uppercase">Chat history</p>
+          {conversations.length === 0 ? (
+            <p className="rounded-lg bg-white/70 px-2 py-2 text-xs text-slate-500">
+              No conversations yet. Start chatting to build history.
+            </p>
+          ) : (
+            <div className="space-y-1.5">
+              {conversations.map((conversation) => {
+                const isActive = conversation.id === conversationId
+                const preview =
+                  conversation.lastMessage?.content ??
+                  conversation.title ??
+                  'New conversation'
+                return (
+                  <button
+                    key={conversation.id}
+                    type="button"
+                    onClick={() => void loadConversationMessages(conversation.id)}
+                    className={`w-full cursor-pointer rounded-lg border px-2.5 py-2 text-left transition-all duration-150 ${
+                      isActive
+                        ? 'border-sky-300/80 bg-white shadow-sm ring-1 ring-sky-200/70'
+                        : 'border-slate-200/60 bg-white/70 hover:border-sky-200/60 hover:bg-white hover:shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="truncate text-xs font-medium text-slate-900">
+                        {conversation.title ?? 'New conversation'}
+                      </p>
+                      <span className="shrink-0 text-[10px] text-slate-500">
+                        {formatRelativeTime(conversation.updatedAt)}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 truncate text-[11px] text-slate-500">{preview}</p>
+                    <p className="mt-0.5 text-[10px] text-slate-400">
+                      {conversation._count.messages} messages
+                    </p>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      ) : null}
+
+      {historyLoading ? <p className="mb-2 text-xs text-slate-500">Loading conversation...</p> : null}
 
       <div ref={feedRef} className="mb-3 min-h-0 flex-1 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/70 p-3">
         {messages.map((message) => (

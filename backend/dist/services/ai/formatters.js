@@ -67,6 +67,74 @@ const buildResultBlocks = (results) => {
             blocks.push({ key: 'low-stock', title: 'Low Stock Items', rows });
             continue;
         }
+        if (result.tool === 'getLowStockItems' && typeof result.data === 'object' && result.data) {
+            const data = result.data;
+            blocks.push({
+                key: 'getLowStockItems',
+                title: 'Low Stock Items',
+                rows: (data.items ?? []).slice(0, 10).map((row) => ({
+                    name: row.name ?? '-',
+                    sku: row.sku ?? '-',
+                    qty: row.quantity ?? 0,
+                    threshold: row.lowStockAt ?? 0,
+                    category: row.categoryName ?? '-',
+                })),
+            });
+            continue;
+        }
+        if (result.tool === 'getExpiringItems' && typeof result.data === 'object' && result.data) {
+            const data = result.data;
+            blocks.push({
+                key: 'getExpiringItems',
+                title: 'Expiring Items',
+                rows: (data.items ?? []).slice(0, 10).map((row) => ({
+                    name: row.name ?? '-',
+                    sku: row.sku ?? '-',
+                    qty: row.quantity ?? 0,
+                    expiry: row.expiryDate ? row.expiryDate.slice(0, 10) : '-',
+                    category: row.category ?? '-',
+                })),
+            });
+            continue;
+        }
+        if (result.tool === 'getInventorySummary' && typeof result.data === 'object' && result.data) {
+            blocks.push({
+                key: 'getInventorySummary',
+                title: 'Inventory Summary',
+                metrics: result.data,
+            });
+            continue;
+        }
+        if (result.tool === 'searchItemBySkuOrName' && typeof result.data === 'object' && result.data) {
+            const data = result.data;
+            blocks.push({
+                key: 'searchItemBySkuOrName',
+                title: 'Search Results',
+                rows: (data.items ?? []).slice(0, 8).map((row) => ({
+                    name: row.name ?? '-',
+                    sku: row.sku ?? '-',
+                    qty: row.quantity ?? 0,
+                    available: row.availableQty ?? 0,
+                    category: row.category ?? '-',
+                })),
+            });
+            continue;
+        }
+        if (result.tool === 'getReorderSuggestions' && typeof result.data === 'object' && result.data) {
+            const data = result.data;
+            blocks.push({
+                key: 'getReorderSuggestions',
+                title: 'Reorder Suggestions',
+                rows: (data.suggestions ?? []).slice(0, 10).map((row) => ({
+                    name: row.name ?? '-',
+                    sku: row.sku ?? '-',
+                    currentQty: row.currentQuantity ?? 0,
+                    suggestedQty: row.suggestedReorderQty ?? 0,
+                    priority: row.priority ?? '-',
+                })),
+            });
+            continue;
+        }
         if (result.tool === 'recent' && Array.isArray(result.data)) {
             const rows = result.data
                 .slice(0, 8)

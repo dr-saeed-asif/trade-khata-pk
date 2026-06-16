@@ -3,6 +3,10 @@ import bcrypt from 'bcrypt'
 import { prisma } from '../config/prisma'
 
 const run = async () => {
+  await seedAdmin()
+}
+
+export const seedAdmin = async () => {
   const adminName = process.env.ADMIN_NAME ?? 'System Admin'
   const adminEmail = process.env.ADMIN_EMAIL
   const adminPassword = process.env.ADMIN_PASSWORD
@@ -29,9 +33,11 @@ const run = async () => {
   })
 
   console.log(`Admin ready: ${admin.email} (role: ${admin.role})`)
+  return admin
 }
 
-run()
+if (require.main === module) {
+  run()
   .catch((error) => {
     const message = error instanceof Error ? error.message : String(error)
     if (message.includes('P1000') || message.includes('Authentication failed')) {
@@ -46,3 +52,4 @@ run()
   .finally(async () => {
     await prisma.$disconnect()
   })
+}

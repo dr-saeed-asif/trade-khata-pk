@@ -810,6 +810,439 @@
       "success": true,
       "id": "86139a21-f8c4-49a6-a27d-6fe2f72fcfcf",
       "createdAt": "2026-05-13T07:34:41.820Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "Show low stock items",
+      "intent": "low-stock",
+      "toolCalls": [
+        "low-stock"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 7,
+      "success": true,
+      "id": "a62136d7-a2f4-4a82-94c8-3936d26e8332",
+      "createdAt": "2026-06-08T09:16:04.195Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "give me a total categories",
+      "intent": "custom-query",
+      "toolCalls": [
+        "category-count"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 4,
+      "success": true,
+      "id": "7d24b722-af9a-4349-87ad-b4366a2b1990",
+      "createdAt": "2026-06-08T09:17:13.394Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "Show low stock items",
+      "intent": "low-stock",
+      "toolCalls": [
+        "low-stock"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 117,
+      "success": true,
+      "id": "565a587f-b6e7-491e-978f-0d8f76ab6ced",
+      "createdAt": "2026-06-16T16:46:33.714Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "کم اسٹاک والی اشیاء دکھائیں",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 313,
+      "success": true,
+      "id": "3d86f4c1-422a-4468-969b-a0caf2e64954",
+      "createdAt": "2026-06-16T16:47:38.020Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "Show low stock items",
+      "intent": "low-stock",
+      "toolCalls": [
+        "low-stock"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 5,
+      "success": true,
+      "id": "b99449ae-6412-4db9-8cc6-38916ab86c76",
+      "createdAt": "2026-06-16T16:48:57.239Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "pakistan ka capital kya hai",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 221,
+      "success": true,
+      "id": "879b9db5-eda6-41d6-a149-7fdafcc3c5eb",
+      "createdAt": "2026-06-16T16:50:31.008Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "show me all categories",
+      "intent": "custom-query",
+      "toolCalls": [
+        "search-items",
+        "category-list"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 16,
+      "success": true,
+      "id": "fdcd84ff-eaca-4dad-a757-fb7bc5c82eff",
+      "createdAt": "2026-06-16T17:15:00.924Z"
+    },
+    {
+      "userId": "231a0666-b88b-4c04-b3dd-5326d06e2a15",
+      "role": "ADMIN",
+      "message": "my name is asif saeed",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 25,
+      "success": true,
+      "id": "896a3b91-3981-4cba-be62-48634178aad2",
+      "createdAt": "2026-06-16T17:15:30.664Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "Show low stock items",
+      "intent": "low-stock",
+      "toolCalls": [
+        "low-stock"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 1107,
+      "success": true,
+      "id": "5fd7ba76-6ece-4081-adb1-e52b431e74d3",
+      "createdAt": "2026-06-16T18:51:59.126Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "hi",
+      "intent": "greeting",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 306,
+      "success": true,
+      "id": "c801f916-997f-4fde-9ec8-2c1a6ebc33cc",
+      "createdAt": "2026-06-16T18:53:00.468Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "i want all sales data",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 1277,
+      "success": true,
+      "id": "e32e86a4-bf10-4864-b53c-ceb57346327b",
+      "createdAt": "2026-06-16T18:53:26.429Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "Create a reorder report from that",
+      "intent": "low-stock",
+      "toolCalls": [
+        "low-stock"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 996,
+      "success": true,
+      "id": "93bab979-0e49-46d6-827b-76bed62ac9fd",
+      "createdAt": "2026-06-16T18:54:10.628Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "how are u",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 1003,
+      "success": true,
+      "id": "c883a220-e867-43e4-b561-cebf0dade00a",
+      "createdAt": "2026-06-16T18:54:27.956Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "1+1 = ?",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 1018,
+      "success": true,
+      "id": "e3567e6b-5497-4a48-8465-1ae58e8ea119",
+      "createdAt": "2026-06-16T18:55:45.343Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "hi how are u",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 1030,
+      "success": true,
+      "id": "aab5a802-a60a-4420-bb5f-a2152bd2a95d",
+      "createdAt": "2026-06-16T19:08:16.747Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "hi",
+      "intent": "greeting",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 222,
+      "success": true,
+      "id": "e87681ae-e318-49e6-a2d6-17b267cdc861",
+      "createdAt": "2026-06-16T19:26:47.277Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "how r u?",
+      "intent": "custom-query",
+      "toolCalls": [
+        "system-snapshot"
+      ],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 1332,
+      "success": true,
+      "id": "291ad92f-916c-4de6-b554-6d116b8ff59e",
+      "createdAt": "2026-06-16T19:26:57.840Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "hi how r u?",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 2168,
+      "success": true,
+      "id": "1200c3c3-52ca-4b89-b9cb-898f1e0a7eb2",
+      "createdAt": "2026-06-16T19:28:13.348Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "ok, now tell me 1+1=?",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 1343,
+      "success": true,
+      "id": "67d87e80-f424-462b-a53a-7da7288ca7eb",
+      "createdAt": "2026-06-16T19:28:38.089Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "Show only critical ones",
+      "intent": "getLowStockItems",
+      "toolCalls": [
+        "getLowStockItems"
+      ],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 8317,
+      "success": true,
+      "id": "2ba36209-9850-4bda-965d-b117d0b9c81e",
+      "createdAt": "2026-06-16T19:28:56.264Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "give me total sales",
+      "intent": "getSalesSummary",
+      "toolCalls": [
+        "getSalesSummary"
+      ],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 5245,
+      "success": true,
+      "id": "2295056d-7d9e-4085-8510-23d9ed221fa6",
+      "createdAt": "2026-06-16T19:29:42.445Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "what is my prevouse question?",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 3207,
+      "success": true,
+      "id": "3616587c-6336-4ea0-b060-8b1758eb1281",
+      "createdAt": "2026-06-16T19:32:12.672Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "hello",
+      "intent": "greeting",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 64,
+      "success": true,
+      "id": "10af12d2-f78b-42ee-9156-038c664eb190",
+      "createdAt": "2026-06-16T19:40:29.467Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "what is the capital of Pakistan?",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 1633,
+      "success": true,
+      "id": "003100e4-a780-47d9-9c35-5dba8271ada9",
+      "createdAt": "2026-06-16T19:40:46.276Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "now i want to totall inventory record",
+      "intent": "getInventorySummary",
+      "toolCalls": [
+        "getInventorySummary"
+      ],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 3387,
+      "success": true,
+      "id": "17319f28-1d20-48f7-99ab-f7ab6a835b13",
+      "createdAt": "2026-06-16T19:41:06.587Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "i want only inventory name items",
+      "intent": "searchItemBySkuOrName",
+      "toolCalls": [
+        "searchItemBySkuOrName"
+      ],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 5360,
+      "success": true,
+      "id": "8aa948f0-61d4-4bab-8386-df8479b766ad",
+      "createdAt": "2026-06-16T19:41:40.814Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "hello",
+      "intent": "greeting",
+      "toolCalls": [],
+      "provider": "rule-based",
+      "citationsCount": 0,
+      "latencyMs": 99,
+      "success": true,
+      "id": "a8b50ced-0eb4-4810-b9a3-b64e1fac8307",
+      "createdAt": "2026-06-16T19:45:42.837Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "what is the capital of pakistan?",
+      "intent": "help",
+      "toolCalls": [],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 1285,
+      "success": true,
+      "id": "1763141a-407a-4f8a-8723-e31cd50aca00",
+      "createdAt": "2026-06-16T19:45:58.701Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "i want to get all inventory list",
+      "intent": "getInventorySummary",
+      "toolCalls": [
+        "getInventorySummary"
+      ],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 5009,
+      "success": true,
+      "id": "6400f948-02a3-43f0-9858-f80b232d4882",
+      "createdAt": "2026-06-16T19:46:25.250Z"
+    },
+    {
+      "userId": "1c72a48e-5bd9-493a-aecd-693c92444ac6",
+      "role": "ADMIN",
+      "message": "just give me Categories",
+      "intent": "searchItemBySkuOrName",
+      "toolCalls": [
+        "searchItemBySkuOrName"
+      ],
+      "provider": "qwen",
+      "citationsCount": 0,
+      "latencyMs": 5995,
+      "success": true,
+      "id": "6ebc9297-ed0a-451f-bdf4-8e0f646fbe2a",
+      "createdAt": "2026-06-16T19:46:53.085Z"
     }
   ]
 }

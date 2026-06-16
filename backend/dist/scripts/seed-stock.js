@@ -1,10 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.seedStock = void 0;
 require("dotenv/config");
 const client_1 = require("@prisma/client");
 const qr_1 = require("../utils/qr");
 const prisma = new client_1.PrismaClient();
 const run = async () => {
+    await (0, exports.seedStock)();
+};
+const seedStock = async () => {
     const user = await prisma.user.findFirst({
         where: { role: 'ADMIN' },
         select: { id: true },
@@ -142,11 +146,14 @@ const run = async () => {
     });
     console.log(`Stock demo data ready. Inserted movements: ${count}`);
 };
-run()
-    .catch((error) => {
-    console.error(error);
-    process.exit(1);
-})
-    .finally(async () => {
-    await prisma.$disconnect();
-});
+exports.seedStock = seedStock;
+if (require.main === module) {
+    run()
+        .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    })
+        .finally(async () => {
+        await prisma.$disconnect();
+    });
+}

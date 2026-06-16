@@ -2,6 +2,8 @@ import type { NextFunction, Request, Response } from 'express'
 import { aiService } from '../services/ai'
 import { ragService } from '../services/rag'
 
+const routeParam = (value: string | string[]) => (Array.isArray(value) ? value[0] : value)
+
 export const aiController = {
   chat: async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -51,6 +53,46 @@ export const aiController = {
       const limit = Number.isFinite(parsedLimit) ? Math.max(1, Math.min(100, Math.floor(parsedLimit))) : 20
       const data = await aiService.history(req.user.userId, limit)
       res.json(data)
+    } catch (error) {
+      next(error)
+    }
+  },
+  listConversations: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) {
+        res.status(401).json({ message: 'Unauthorized' })
+        return
+      }
+      const parsedLimit = Number(req.query.limit ?? 20)
+      const limit = Number.isFinite(parsedLimit) ? Math.max(1, Math.min(50, Math.floor(parsedLimit))) : 20
+      const data = await aiService.listConversations(req.user.userId, limit)
+      res.json(data)
+    } catch (error) {
+      next(error)
+    }
+  },
+  getConversationMessages: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) {
+        res.status(401).json({ message: 'Unauthorized' })
+        return
+      }
+      const parsedLimit = Number(req.query.limit ?? 50)
+      const limit = Number.isFinite(parsedLimit) ? Math.max(1, Math.min(100, Math.floor(parsedLimit))) : 50
+      const data = await aiService.getConversationMessages(req.user.userId, routeParam(req.params.conversationId), limit)
+      res.json(data)
+    } catch (error) {
+      next(error)
+    }
+  },
+  createConversation: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) {
+        res.status(401).json({ message: 'Unauthorized' })
+        return
+      }
+      const data = await aiService.createConversation(req.user.userId)
+      res.status(201).json(data)
     } catch (error) {
       next(error)
     }

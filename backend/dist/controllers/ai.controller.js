@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.aiController = void 0;
 const ai_1 = require("../services/ai");
 const rag_1 = require("../services/rag");
+const routeParam = (value) => (Array.isArray(value) ? value[0] : value);
 exports.aiController = {
     chat: async (req, res, next) => {
         try {
@@ -56,6 +57,49 @@ exports.aiController = {
             const limit = Number.isFinite(parsedLimit) ? Math.max(1, Math.min(100, Math.floor(parsedLimit))) : 20;
             const data = await ai_1.aiService.history(req.user.userId, limit);
             res.json(data);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+    listConversations: async (req, res, next) => {
+        try {
+            if (!req.user) {
+                res.status(401).json({ message: 'Unauthorized' });
+                return;
+            }
+            const parsedLimit = Number(req.query.limit ?? 20);
+            const limit = Number.isFinite(parsedLimit) ? Math.max(1, Math.min(50, Math.floor(parsedLimit))) : 20;
+            const data = await ai_1.aiService.listConversations(req.user.userId, limit);
+            res.json(data);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+    getConversationMessages: async (req, res, next) => {
+        try {
+            if (!req.user) {
+                res.status(401).json({ message: 'Unauthorized' });
+                return;
+            }
+            const parsedLimit = Number(req.query.limit ?? 50);
+            const limit = Number.isFinite(parsedLimit) ? Math.max(1, Math.min(100, Math.floor(parsedLimit))) : 50;
+            const data = await ai_1.aiService.getConversationMessages(req.user.userId, routeParam(req.params.conversationId), limit);
+            res.json(data);
+        }
+        catch (error) {
+            next(error);
+        }
+    },
+    createConversation: async (req, res, next) => {
+        try {
+            if (!req.user) {
+                res.status(401).json({ message: 'Unauthorized' });
+                return;
+            }
+            const data = await ai_1.aiService.createConversation(req.user.userId);
+            res.status(201).json(data);
         }
         catch (error) {
             next(error);

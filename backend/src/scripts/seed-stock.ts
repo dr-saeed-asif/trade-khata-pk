@@ -5,6 +5,10 @@ import { generateBarcodeValue, generateQrValue } from '../utils/qr'
 const prisma = new PrismaClient()
 
 const run = async () => {
+  await seedStock()
+}
+
+export const seedStock = async () => {
   const user = await prisma.user.findFirst({
     where: { role: 'ADMIN' },
     select: { id: true },
@@ -155,7 +159,8 @@ const run = async () => {
   console.log(`Stock demo data ready. Inserted movements: ${count}`)
 }
 
-run()
+if (require.main === module) {
+  run()
   .catch((error) => {
     console.error(error)
     process.exit(1)
@@ -163,3 +168,4 @@ run()
   .finally(async () => {
     await prisma.$disconnect()
   })
+}

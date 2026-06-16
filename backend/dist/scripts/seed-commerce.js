@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.seedCommerce = void 0;
 require("dotenv/config");
 const client_1 = require("@prisma/client");
 const prisma_1 = require("../config/prisma");
@@ -217,6 +218,9 @@ const seedSaleRecords = async (parties, items, userId) => {
     console.log(`Sales: seeded ${created} (total ${await prisma_1.prisma.sale.count()})`);
 };
 const run = async () => {
+    await (0, exports.seedCommerce)();
+};
+const seedCommerce = async () => {
     const user = await prisma_1.prisma.user.findFirst({
         where: { role: 'ADMIN' },
         select: { id: true },
@@ -230,9 +234,12 @@ const run = async () => {
     console.log(`  Purchases: ${await prisma_1.prisma.purchase.count()}`);
     console.log(`  Sales:     ${await prisma_1.prisma.sale.count()}`);
 };
-run()
-    .catch((error) => {
-    console.error(error);
-    process.exit(1);
-})
-    .finally(() => prisma_1.prisma.$disconnect());
+exports.seedCommerce = seedCommerce;
+if (require.main === module) {
+    run()
+        .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    })
+        .finally(() => prisma_1.prisma.$disconnect());
+}
