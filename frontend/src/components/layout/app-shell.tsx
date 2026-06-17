@@ -30,6 +30,8 @@ import { alertsService } from '@/services/alerts.service'
 import type { AlertSummary } from '@/types'
 import { AiAssistant } from '@/components/ai/ai-assistant'
 import { APP_NAME, appLogo } from '@/lib/branding'
+import { AppBackground } from '@/components/layout/app-background'
+import { theme } from '@/lib/theme'
 
 const links = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard, permission: 'dashboard.read' },
@@ -158,14 +160,15 @@ export const AppShell = () => {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-50">
+    <div className="relative flex h-screen overflow-hidden">
+      <AppBackground variant="app" />
       <aside
         className={cn(
-          'flex h-screen flex-col border-r border-slate-200 bg-white/95 p-3 shadow-sm transition-all',
+          'relative z-10 flex h-screen flex-col border-r border-white/40 bg-white/75 p-3 shadow-[0_8px_32px_rgba(15,23,42,0.06)] backdrop-blur-xl transition-all',
           collapsed ? 'w-20' : 'w-72',
         )}
       >
-        <div className="sticky top-0 z-10 mb-4 flex items-center justify-between gap-2 rounded-xl bg-white/95 py-1 backdrop-blur">
+        <div className="sticky top-0 z-10 mb-4 flex items-center justify-between gap-2 rounded-xl py-1">
           <div className={cn('flex min-w-0 items-center gap-2', collapsed ? 'justify-center' : '')}>
             <img
               src={appLogo}
@@ -173,7 +176,9 @@ export const AppShell = () => {
               className={cn('shrink-0 object-contain', collapsed ? 'h-9 w-9' : 'h-10 w-10')}
             />
             {!collapsed ? (
-              <span className="truncate px-1 text-lg font-semibold tracking-tight text-slate-900">{APP_NAME}</span>
+              <span className={cn('truncate px-1 text-lg font-semibold tracking-tight', theme.headingGradient)}>
+                {APP_NAME}
+              </span>
             ) : null}
           </div>
           <Button
@@ -197,10 +202,8 @@ export const AppShell = () => {
               to={link.to}
               className={({ isActive }) =>
                 cn(
-                  'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors',
-                  isActive
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900',
+                  'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200',
+                  isActive ? theme.navActive : theme.navInactive,
                 )
               }
               title={link.label}
@@ -216,8 +219,8 @@ export const AppShell = () => {
             </NavLink>
           ))}
         </nav>
-        <div className="mt-auto border-t border-slate-200 pt-3">
-          <div className={cn('rounded-xl border border-slate-200 bg-slate-50', collapsed ? 'p-2' : 'p-3')}>
+        <div className="mt-auto border-t border-white/50 pt-3">
+          <div className={cn('rounded-xl border border-white/50 bg-white/60 backdrop-blur', collapsed ? 'p-2' : 'p-3')}>
             {!collapsed && !userMenuOpen ? (
               <button
                 type="button"
@@ -225,7 +228,7 @@ export const AppShell = () => {
                 onClick={() => setUserMenuOpen((current) => !current)}
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-200 text-sm font-semibold text-slate-700">
+                  <div className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-semibold', theme.avatar)}>
                     {initials || 'U'}
                   </div>
                   <div className="min-w-0">
@@ -287,14 +290,14 @@ export const AppShell = () => {
           </div>
         </div>
       </aside>
-      <main className="flex h-screen flex-1 flex-col overflow-hidden">
-        <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur md:px-6">
+      <main className="relative z-10 flex h-screen flex-1 flex-col overflow-hidden">
+        <header className="flex shrink-0 items-center justify-between border-b border-white/40 bg-white/75 px-4 py-4 backdrop-blur-xl md:px-6">
           <div>
             <p className="text-sm text-slate-500">Welcome</p>
-            <p className="font-semibold">{user?.name ?? 'User'}</p>
+            <p className="font-semibold text-slate-900">{user?.name ?? 'User'}</p>
           </div>
           <div className="flex items-center gap-3">
-              <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-0.5 text-xs font-medium">
+              <div className="flex rounded-lg border border-white/60 bg-white/70 p-0.5 text-xs font-medium shadow-sm backdrop-blur">
                 <button
                   type="button"
                   className={`rounded-md px-2.5 py-1 transition-colors ${locale === 'en' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
@@ -344,7 +347,7 @@ export const AppShell = () => {
                   onMouseDown={startAssistantResize}
                 />
                 <aside
-                  className="h-full shrink-0 border-l border-slate-200 bg-white/90 p-4 backdrop-blur md:p-5"
+                  className="h-full shrink-0 border-l border-white/40 bg-white/75 p-4 backdrop-blur-xl md:p-5"
                   style={{ width: `${assistantWidth}px` }}
                 >
                   <AiAssistant className="h-full" />

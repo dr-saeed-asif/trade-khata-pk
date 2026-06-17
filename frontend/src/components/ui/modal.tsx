@@ -24,14 +24,14 @@ export const Modal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden />
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} aria-hidden />
       <div
         className={cn(
-          'relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl',
+          'relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/50 bg-white/90 shadow-2xl backdrop-blur-xl',
           panelClassName,
         )}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-slate-200 px-4 py-3 sm:px-5">
+        <div className="flex shrink-0 items-center justify-between border-b border-white/50 bg-white/60 px-4 py-3 backdrop-blur sm:px-5">
           <h3 className="text-base font-semibold text-slate-900 sm:text-lg">{title}</h3>
           <button
             type="button"
@@ -44,7 +44,7 @@ export const Modal = ({
         </div>
         <div className={cn('min-h-0 flex-1 overflow-y-auto p-4', bodyClassName)}>{children}</div>
         {footer ? (
-          <div className="shrink-0 border-t border-slate-200 bg-slate-50/80 px-4 py-3 sm:px-5">{footer}</div>
+          <div className="shrink-0 border-t border-white/50 bg-sky-50/30 px-4 py-3 backdrop-blur sm:px-5">{footer}</div>
         ) : null}
       </div>
     </div>

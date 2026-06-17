@@ -16,6 +16,8 @@ import {
 import { authService } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth-store'
 import { useToast } from '@/hooks/use-toast'
+import { theme } from '@/lib/theme'
+import { cn } from '@/lib/utils'
 
 const roleLabels = {
   ADMIN: 'Administrator',
@@ -184,7 +186,7 @@ export const SettingsPage = () => {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-900">Account Settings</h1>
+        <h1 className={cn('text-2xl font-semibold', theme.headingGradient)}>Account Settings</h1>
         <p className="mt-1 text-sm text-slate-500">Manage your profile, password, and account preferences.</p>
       </div>
 

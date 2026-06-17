@@ -12,13 +12,13 @@ export const Button = ({ className, variant = 'default', ...props }: Props) => (
     className={cn(
       'inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium transition duration-200 disabled:cursor-not-allowed disabled:opacity-50',
       variant === 'default' &&
-        'bg-slate-900 text-white shadow-sm hover:bg-slate-800 hover:shadow-md active:scale-[0.98]',
+        'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-md shadow-slate-900/20 hover:shadow-lg hover:brightness-110 active:scale-[0.98]',
       variant === 'outline' &&
-        'border border-slate-200 bg-white text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]',
+        'border border-white/60 bg-white/80 text-slate-700 shadow-sm backdrop-blur hover:border-sky-200 hover:bg-sky-50/50 active:scale-[0.98]',
       variant === 'destructive' &&
         'bg-red-600 text-white shadow-sm hover:bg-red-500 hover:shadow-md active:scale-[0.98]',
       variant === 'contained' &&
-        'bg-blue-600 text-white shadow-sm hover:bg-blue-500 hover:shadow-md active:scale-[0.98]',
+        'bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-md shadow-sky-900/20 hover:from-sky-500 hover:to-indigo-500 hover:shadow-lg active:scale-[0.98]',
       className,
     )}
     {...props}

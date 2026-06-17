@@ -25,7 +25,42 @@ a {
   text-decoration: none;
 }
 
-/* Login page motion */
+/* Auth & app theme motion */
+@keyframes theme-card-in {
+  from {
+    opacity: 0;
+    transform: perspective(1100px) translateY(1.25rem) rotateX(10deg) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1100px) translateY(0) rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes theme-orb-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(2%, 3%) scale(1.05);
+  }
+  66% {
+    transform: translate(-2%, 1%) scale(0.98);
+  }
+}
+
+@keyframes theme-border-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Legacy aliases */
 @keyframes login-card-in {
   from {
     opacity: 0;

@@ -6,8 +6,8 @@ interface Props {
 }
 
 export const EmptyState = ({ title, subtitle }: Props) => (
-  <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-gradient-to-b from-slate-50 to-white px-6 py-12 text-center">
-    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+  <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-sky-200/80 bg-gradient-to-b from-sky-50/50 via-white to-indigo-50/30 px-6 py-12 text-center backdrop-blur">
+    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-sky-100 to-indigo-100 text-sky-500">
       <Inbox className="h-6 w-6" />
     </div>
     <p className="text-base font-semibold text-slate-800">{title}</p>
