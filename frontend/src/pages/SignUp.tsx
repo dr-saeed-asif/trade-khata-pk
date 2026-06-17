@@ -1,45 +1,34 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
+import axios from 'axios'
 import { Button } from '@/components/ui/button'
 import { APP_NAME, APP_TAGLINE, appLogo } from '@/lib/branding'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { formPlaceholders } from '@/lib/form-placeholders'
-import { loginSchema, type LoginInput } from '@/lib/validators'
-import {
-  clearRememberedLogin,
-  isRememberMeEnabled,
-  loadRememberedLogin,
-  saveRememberedLogin,
-} from '@/lib/remember-login'
+import { registerSchema, type RegisterInput } from '@/lib/validators'
 import { authService } from '@/services/auth.service'
 import { useAuthStore } from '@/store/auth-store'
 import { useApi } from '@/hooks/use-api'
 import { cn } from '@/lib/utils'
 
-const getInitialForm = (): LoginInput => {
-  const remembered = loadRememberedLogin()
-  return remembered ?? { identifier: '', password: '' }
-}
-
-export const LoginPage = () => {
+export const SignUpPage = () => {
   const navigate = useNavigate()
   const setAuth = useAuthStore((state) => state.setAuth)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(isRememberMeEnabled)
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof LoginInput, string>>>({})
-  const [form, setForm] = useState<LoginInput>(getInitialForm)
-  const { execute, loading } = useApi(authService.login)
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof RegisterInput, string>>>({})
+  const [form, setForm] = useState<RegisterInput>({ name: '', email: '', password: '' })
+  const { execute, loading } = useApi(authService.register)
 
-  const onSubmit = async (values: LoginInput) => {
+  const onSubmit = async (values: RegisterInput) => {
     setError('')
-    const parsed = loginSchema.safeParse(values)
+    const parsed = registerSchema.safeParse(values)
     if (!parsed.success) {
       setFieldErrors(
-        parsed.error.issues.reduce<Partial<Record<keyof LoginInput, string>>>((acc, issue) => {
-          const path = issue.path[0] as keyof LoginInput
+        parsed.error.issues.reduce<Partial<Record<keyof RegisterInput, string>>>((acc, issue) => {
+          const path = issue.path[0] as keyof RegisterInput
           acc[path] = issue.message
           return acc
         }, {}),
@@ -48,22 +37,20 @@ export const LoginPage = () => {
     }
     setFieldErrors({})
     try {
-      const response = await execute(values)
-      if (rememberMe) {
-        saveRememberedLogin({ identifier: values.identifier, password: values.password })
-      } else {
-        clearRememberedLogin()
-      }
+      const response = await execute(parsed.data)
       setAuth(response.token, response.user)
       navigate('/')
-    } catch {
-      setError('Invalid credentials. Please try again.')
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        setError('This email is already registered. Please sign in instead.')
+        return
+      }
+      setError('Could not create account. Please try again.')
     }
   }
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-4">
-      {/* Animated depth background */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(14,165,233,0.22),transparent)]"
@@ -80,8 +67,6 @@ export const LoginPage = () => {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 h-[min(90vw,36rem)] w-[min(90vw,36rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-400/10 blur-[120px] [animation:login-orb-drift_26s_ease-in-out_infinite]"
       />
-
-      {/* Subtle grid for depth */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
@@ -95,7 +80,6 @@ export const LoginPage = () => {
             '[animation:login-card-in_0.75s_ease-out_both]',
           )}
         >
-          {/* Glow ring */}
           <div
             aria-hidden
             className="pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-br from-sky-400/50 via-indigo-400/35 to-violet-500/40 opacity-75 blur-[1px] [animation:login-border-glow_4s_ease-in-out_infinite]"
@@ -112,7 +96,7 @@ export const LoginPage = () => {
                 {APP_NAME}
               </h1>
               <p className="mt-1.5 text-sm text-slate-500">{APP_TAGLINE}</p>
-              <p className="mt-1 text-xs text-slate-400">Sign in to continue</p>
+              <p className="mt-1 text-xs text-slate-400">Create your account to get started</p>
             </div>
 
             <form
@@ -123,34 +107,44 @@ export const LoginPage = () => {
               className="relative space-y-5"
             >
               <div className="space-y-1.5">
-                <label htmlFor="login-identifier" className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Email or Username
+                <label htmlFor="signup-name" className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Full Name
                 </label>
                 <Input
-                  id="login-identifier"
-                  autoComplete="username"
-                  placeholder={formPlaceholders.auth.loginId}
+                  id="signup-name"
+                  autoComplete="name"
+                  placeholder={formPlaceholders.user.fullName}
                   className="h-11 border-slate-200/80 bg-white/90 shadow-sm transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/30"
-                  value={form.identifier}
-                  onChange={(event) => setForm((prev) => ({ ...prev, identifier: event.target.value }))}
+                  value={form.name}
+                  onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
                 />
-                <p className="min-h-[1rem] text-xs text-red-600">{fieldErrors.identifier}</p>
+                <p className="min-h-[1rem] text-xs text-red-600">{fieldErrors.name}</p>
               </div>
               <div className="space-y-1.5">
-                <div className="flex items-center justify-between gap-2">
-                  <label htmlFor="login-password" className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Password
-                  </label>
-                  <Link to="/forgot-password" className="text-xs font-medium text-sky-600 hover:text-sky-700">
-                    Forgot password?
-                  </Link>
-                </div>
+                <label htmlFor="signup-email" className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Email
+                </label>
+                <Input
+                  id="signup-email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder={formPlaceholders.user.email}
+                  className="h-11 border-slate-200/80 bg-white/90 shadow-sm transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/30"
+                  value={form.email}
+                  onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+                />
+                <p className="min-h-[1rem] text-xs text-red-600">{fieldErrors.email}</p>
+              </div>
+              <div className="space-y-1.5">
+                <label htmlFor="signup-password" className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Password
+                </label>
                 <div className="relative">
                   <Input
-                    id="login-password"
+                    id="signup-password"
                     type={showPassword ? 'text' : 'password'}
-                    autoComplete="current-password"
-                    placeholder={formPlaceholders.auth.password}
+                    autoComplete="new-password"
+                    placeholder={formPlaceholders.user.password}
                     className="h-11 border-slate-200/80 bg-white/90 pr-11 shadow-sm transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-sky-500/30"
                     value={form.password}
                     onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
@@ -166,19 +160,6 @@ export const LoginPage = () => {
                 </div>
                 <p className="min-h-[1rem] text-xs text-red-600">{fieldErrors.password}</p>
               </div>
-              <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(event) => {
-                    const checked = event.target.checked
-                    setRememberMe(checked)
-                    if (!checked) clearRememberedLogin()
-                  }}
-                  className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-sky-500/30"
-                />
-                Remember me
-              </label>
               {error ? (
                 <p className="rounded-lg border border-red-200 bg-red-50/90 px-3 py-2 text-sm text-red-700 shadow-sm">{error}</p>
               ) : null}
@@ -186,12 +167,12 @@ export const LoginPage = () => {
                 disabled={loading}
                 className="h-11 w-full rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 font-semibold text-white shadow-lg shadow-slate-900/25 transition-all duration-300 hover:shadow-xl hover:brightness-110 active:scale-[0.98] disabled:opacity-60"
               >
-                {loading ? 'Signing in…' : 'Sign in'}
+                {loading ? 'Creating account…' : 'Sign up'}
               </Button>
               <p className="text-center text-sm text-slate-600">
-                Don&apos;t have an account?{' '}
-                <Link to="/signup" className="font-medium text-sky-600 hover:text-sky-700">
-                  Sign up
+                Already have an account?{' '}
+                <Link to="/login" className="font-medium text-sky-600 hover:text-sky-700">
+                  Sign in
                 </Link>
               </p>
             </form>

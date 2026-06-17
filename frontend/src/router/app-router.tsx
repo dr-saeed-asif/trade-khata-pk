@@ -2,6 +2,7 @@ import { BrowserRouter, HashRouter, Navigate, Route, Routes } from 'react-router
 import type { ReactElement } from 'react'
 import { useAuthStore } from '@/store/auth-store'
 import { LoginPage } from '@/pages/Login'
+import { SignUpPage } from '@/pages/SignUp'
 import { ForgotPasswordPage } from '@/pages/ForgotPassword'
 import { AppShell } from '@/components/layout/app-shell'
 import { DashboardPage } from '@/pages/Dashboard'
@@ -23,13 +24,13 @@ import { hasPermission, type Permission } from '@/lib/permissions'
 
 const isDesktopFileProtocol = typeof window !== 'undefined' && window.location.protocol === 'file:'
 const RouterProvider = isDesktopFileProtocol ? HashRouter : BrowserRouter
-const SAFE_FALLBACK_ROUTE = '/admin/settings'
+const SAFE_FALLBACK_ROUTE = '/admin/dashboard'
 
 const RequirePermission = ({ permission, children }: { permission: Permission; children: ReactElement }) => {
   const user = useAuthStore((state) => state.user)
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/signup" replace />
   if (!hasPermission(user.role, permission, user.permissions)) {
-    if (permission === 'settings.read') return <Navigate to="/login" replace />
+    if (permission === 'settings.read') return <Navigate to="/signup" replace />
     return <Navigate to={SAFE_FALLBACK_ROUTE} replace />
   }
   return children
@@ -38,7 +39,7 @@ const RequirePermission = ({ permission, children }: { permission: Permission; c
 const ProtectedRoutes = () => {
   const token = useAuthStore((state) => state.token)
   const user = useAuthStore((state) => state.user)
-  if (!token || !user) return <Navigate to="/login" replace />
+  if (!token || !user) return <Navigate to="/signup" replace />
 
   return (
     <Routes>
@@ -92,6 +93,7 @@ const ProtectedRoutes = () => {
 export const AppRouter = () => (
   <RouterProvider>
     <Routes>
+      <Route path="/signup" element={<SignUpPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/*" element={<ProtectedRoutes />} />

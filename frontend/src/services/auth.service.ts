@@ -1,5 +1,5 @@
 import { http } from '@/services/http'
-import type { LoginInput } from '@/lib/validators'
+import type { LoginInput, RegisterInput } from '@/lib/validators'
 import type { User } from '@/types'
 
 interface LoginResponse {
@@ -8,6 +8,11 @@ interface LoginResponse {
 }
 
 export const authService = {
+  register: async (payload: RegisterInput) => {
+    const { data } = await http.post<LoginResponse>('/auth/register', payload)
+    return data
+  },
+
   login: async (payload: LoginInput) => {
     const { data } = await http.post<LoginResponse>('/auth/login', payload)
     return data
