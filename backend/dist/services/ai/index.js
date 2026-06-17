@@ -72,7 +72,7 @@ exports.aiService = {
             if (!cachedCategories) {
                 cachedCategories = (await category_service_1.categoryService.list({ limit: '500' })).data;
             }
-            return cachedCategories;
+            return cachedCategories ?? [];
         };
         const can = (permission) => hasRuntimePermission(user, permission);
         try {

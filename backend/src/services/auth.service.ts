@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt'
-import type { UserRole } from '@prisma/client'
 import { prisma } from '../config/prisma'
 import { ApiError } from '../utils/api-error'
 import { signToken } from '../utils/jwt'
@@ -19,7 +18,7 @@ const findUserByLoginIdentifier = async (identifier: string) => {
 }
 
 export const authService = {
-  register: async (input: { name: string; email: string; password: string; role?: UserRole }) => {
+  register: async (input: { name: string; email: string; password: string }) => {
     const existingUser = await prisma.user.findUnique({ where: { email: input.email } })
     if (existingUser) throw new ApiError(409, 'Email already in use')
 
@@ -29,7 +28,7 @@ export const authService = {
         name: input.name,
         email: input.email,
         passwordHash,
-        role: input.role ?? 'USER',
+        role: 'USER',
       },
     })
 

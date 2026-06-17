@@ -77,11 +77,11 @@ export const aiService = {
     let estimatedCostUsd = 0
   let answer = ''
 
-    const ensureCategories = async () => {
+    const ensureCategories = async (): Promise<CategoryRecord[]> => {
       if (!cachedCategories) {
         cachedCategories = (await categoryService.list({ limit: '500' })).data
       }
-      return cachedCategories
+      return cachedCategories ?? []
     }
 
     const can = (permission: Permission) => hasRuntimePermission(user, permission)

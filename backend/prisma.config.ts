@@ -5,13 +5,13 @@ import { defineConfig } from 'prisma/config'
 // Always load backend/.env (Prisma CLI may run with a different cwd)
 config({ path: resolve(__dirname, '.env') })
 
-const databaseUrl = process.env.DATABASE_URL
+// Prisma generate does not connect to the DB; a placeholder is enough for CI/Vercel builds.
+const databaseUrl =
+  process.env.DATABASE_URL ?? 'postgresql://build:build@localhost:5432/build?schema=public'
 
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL is missing. Set it in backend/.env')
-}
-
-if (databaseUrl.includes('YOUR_PASSWORD')) {
+if (
+  process.env.DATABASE_URL?.includes('YOUR_PASSWORD')
+) {
   throw new Error(
     'DATABASE_URL still contains YOUR_PASSWORD. Edit backend/.env and set your real PostgreSQL password.',
   )

@@ -5,10 +5,9 @@ const dateStringSchema = z
   .refine((value) => !Number.isNaN(new Date(value).getTime()), 'Invalid date')
 
 export const registerSchema = z.object({
-  name: z.string().min(2),
-  email: z.email(),
-  password: z.string().min(6),
-  role: z.enum(['ADMIN', 'MANAGER', 'USER']).optional(),
+  name: z.string().trim().min(2, 'Name must be at least 2 characters'),
+  email: z.string().trim().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
 const usernameSchema = z

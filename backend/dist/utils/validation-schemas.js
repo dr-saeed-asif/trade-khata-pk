@@ -6,10 +6,9 @@ const dateStringSchema = zod_1.z
     .string()
     .refine((value) => !Number.isNaN(new Date(value).getTime()), 'Invalid date');
 exports.registerSchema = zod_1.z.object({
-    name: zod_1.z.string().min(2),
-    email: zod_1.z.email(),
-    password: zod_1.z.string().min(6),
-    role: zod_1.z.enum(['ADMIN', 'MANAGER', 'USER']).optional(),
+    name: zod_1.z.string().trim().min(2, 'Name must be at least 2 characters'),
+    email: zod_1.z.string().trim().email('Please enter a valid email address'),
+    password: zod_1.z.string().min(6, 'Password must be at least 6 characters'),
 });
 const usernameSchema = zod_1.z
     .string()

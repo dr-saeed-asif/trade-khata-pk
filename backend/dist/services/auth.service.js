@@ -32,7 +32,7 @@ exports.authService = {
                 name: input.name,
                 email: input.email,
                 passwordHash,
-                role: input.role ?? 'USER',
+                role: 'USER',
             },
         });
         await activity_service_1.activityService.create({
