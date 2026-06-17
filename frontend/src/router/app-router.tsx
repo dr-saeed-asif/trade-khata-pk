@@ -73,7 +73,7 @@ const ProtectedRoutes = () => {
         <Route path="/admin/roles" element={<RequirePermission permission="roles.read"><RolesPage /></RequirePermission>} />
         <Route path="/admin/roles/create" element={<RequirePermission permission="roles.create"><RolesPage /></RequirePermission>} />
         <Route path="/admin/roles/edit" element={<RequirePermission permission="roles.update"><RolesPage /></RequirePermission>} />
-        <Route path="/admin/settings" element={<RequirePermission permission="settings.read"><SettingsPage /></RequirePermission>} />
+        <Route path="/admin/settings" element={<SettingsPage />} />
         <Route path="/admin/parties" element={<RequirePermission permission="parties.read"><PartiesPage /></RequirePermission>} />
         <Route path="/admin/parties/create" element={<RequirePermission permission="parties.manage"><PartiesPage /></RequirePermission>} />
         <Route path="/admin/parties/edit" element={<RequirePermission permission="parties.manage"><PartiesPage /></RequirePermission>} />

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { APP_NAME, APP_TAGLINE, appLogo } from '@/lib/branding'
@@ -18,6 +18,11 @@ import { useAuthStore } from '@/store/auth-store'
 import { useApi } from '@/hooks/use-api'
 import { cn } from '@/lib/utils'
 
+type LoginLocationState = {
+  registered?: boolean
+  email?: string
+}
+
 const getInitialForm = (): LoginInput => {
   const remembered = loadRememberedLogin()
   return remembered ?? { identifier: '', password: '' }
@@ -25,13 +30,28 @@ const getInitialForm = (): LoginInput => {
 
 export const LoginPage = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const locationState = (location.state ?? {}) as LoginLocationState
+  const token = useAuthStore((state) => state.token)
+  const user = useAuthStore((state) => state.user)
   const setAuth = useAuthStore((state) => state.setAuth)
   const [error, setError] = useState('')
+  const [successMessage] = useState(
+    locationState.registered ? 'Account created successfully. Please sign in to continue.' : '',
+  )
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(isRememberMeEnabled)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof LoginInput, string>>>({})
-  const [form, setForm] = useState<LoginInput>(getInitialForm)
+  const [form, setForm] = useState<LoginInput>(() => {
+    const initial = getInitialForm()
+    if (locationState.email) {
+      return { ...initial, identifier: locationState.email }
+    }
+    return initial
+  })
   const { execute, loading } = useApi(authService.login)
+
+  if (token && user) return <Navigate to="/" replace />
 
   const onSubmit = async (values: LoginInput) => {
     setError('')
@@ -179,6 +199,11 @@ export const LoginPage = () => {
                 />
                 Remember me
               </label>
+              {successMessage ? (
+                <p className="rounded-lg border border-emerald-200 bg-emerald-50/90 px-3 py-2 text-sm text-emerald-800 shadow-sm">
+                  {successMessage}
+                </p>
+              ) : null}
               {error ? (
                 <p className="rounded-lg border border-red-200 bg-red-50/90 px-3 py-2 text-sm text-red-700 shadow-sm">{error}</p>
               ) : null}

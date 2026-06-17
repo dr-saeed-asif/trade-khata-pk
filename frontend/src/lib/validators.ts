@@ -23,6 +23,25 @@ export const registerSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
+export const updateProfileSchema = z.object({
+  name: z.string().trim().min(2, 'Name must be at least 2 characters'),
+})
+
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(6, 'Current password is required'),
+    newPassword: z.string().min(6, 'New password must be at least 6 characters'),
+    confirmPassword: z.string().min(6, 'Please confirm your new password'),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
+
+export const deleteAccountSchema = z.object({
+  password: z.string().min(1, 'Password is required to confirm deletion'),
+})
+
 const generateNumericSku = () => `${Date.now()}${Math.floor(100 + Math.random() * 900)}`
 
 export const itemSchema = z
@@ -112,6 +131,9 @@ export const purchaseSchema = z.object({
 
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterInput = z.infer<typeof registerSchema>
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>
+export type DeleteAccountInput = z.infer<typeof deleteAccountSchema>
 export type ItemInput = z.infer<typeof itemSchema>
 export type CategoryInput = z.infer<typeof categorySchema>
 export type PartyInput = z.infer<typeof partySchema>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import axios from 'axios'
 import { Button } from '@/components/ui/button'
@@ -15,12 +15,15 @@ import { cn } from '@/lib/utils'
 
 export const SignUpPage = () => {
   const navigate = useNavigate()
-  const setAuth = useAuthStore((state) => state.setAuth)
+  const token = useAuthStore((state) => state.token)
+  const user = useAuthStore((state) => state.user)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof RegisterInput, string>>>({})
   const [form, setForm] = useState<RegisterInput>({ name: '', email: '', password: '' })
   const { execute, loading } = useApi(authService.register)
+
+  if (token && user) return <Navigate to="/" replace />
 
   const onSubmit = async (values: RegisterInput) => {
     setError('')
@@ -37,9 +40,11 @@ export const SignUpPage = () => {
     }
     setFieldErrors({})
     try {
-      const response = await execute(parsed.data)
-      setAuth(response.token, response.user)
-      navigate('/')
+      await execute(parsed.data)
+      navigate('/login', {
+        replace: true,
+        state: { registered: true, email: parsed.data.email },
+      })
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
         setError('This email is already registered. Please sign in instead.')

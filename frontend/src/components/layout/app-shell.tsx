@@ -67,7 +67,6 @@ export const AppShell = () => {
   const resizeStartWidthRef = useRef(assistantWidth)
   const canReadAlerts = hasPermission(user?.role, 'alerts.read', user?.permissions)
   const canUseAi = hasPermission(user?.role, 'ai.chat', user?.permissions)
-  const canReadSettings = hasPermission(user?.role, 'settings.read', user?.permissions)
   const visibleLinks = links.filter((link) =>
     link.permission ? hasPermission(user?.role, link.permission, user?.permissions) : true,
   )
@@ -250,16 +249,17 @@ export const AppShell = () => {
                   <ChevronsUpDown className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
                 </button>
                 <div className="border-t border-slate-200" />
-                {canReadSettings ? (
-                  <button
-                    type="button"
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-base text-slate-700 hover:bg-slate-200/60"
-                    onClick={() => navigate('/admin/settings')}
-                  >
-                    <Settings className="h-4 w-4" />
-                    <span>Settings</span>
-                  </button>
-                ) : null}
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-base text-slate-700 hover:bg-slate-200/60"
+                  onClick={() => {
+                    setUserMenuOpen(false)
+                    navigate('/admin/settings')
+                  }}
+                >
+                  <Settings className="h-4 w-4" />
+                  <span>Settings</span>
+                </button>
                 <button
                   type="button"
                   className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-base text-slate-700 hover:bg-slate-200/60"
